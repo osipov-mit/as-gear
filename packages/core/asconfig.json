@@ -1,0 +1,26 @@
+{
+  "targets": {
+    "debug": {
+      "outFile": "build/debug.wasm",
+      "textFile": "build/debug.wat",
+      "debug": true
+    },
+    "release": {
+      "outFile": "build/release.wasm",
+      "textFile": "build/release.wat",
+      "optimizeLevel": 3,
+      "shrinkLevel": 0
+    }
+  },
+  "options": {
+    "importMemory": true,
+    "noExportMemory": true,
+    "runtime": "./assembly/runtime/gear",
+    "exportStart": "nostart",
+    "converge": false,
+    "exportRuntime": true,
+    "disable": ["bulk-memory"],
+    "use": ["abort="],
+    "noAssert": true
+  }
+}
