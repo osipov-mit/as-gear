@@ -1,7 +1,7 @@
 import { u128 } from 'as-bignum/assembly';
 import { gr_create_program, gr_create_program_wgas, Hash, HashWithValue, LengthWithTwoHashes } from '../sys';
 import { getError, panic } from './utils';
-import { MessageId, ActorId, CodeId, MessageAndActorIds } from './types';
+import { CodeId, MessageAndActorIds } from './types';
 
 export function createProgram(
   codeId: CodeId,

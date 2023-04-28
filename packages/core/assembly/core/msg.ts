@@ -302,7 +302,7 @@ export function sendInput(destination: ActorId, value: u128, offset: u32, len: u
 }
 
 export function sendInputDelayed(destination: ActorId, value: u128, offset: u32, len: u32, delay: u32): Hash | null {
-  const pidValue = new HashWithValue(destination, value);
+  const pidValue = new HashWithValue(destination.value, value);
 
   const res: LengthWithHash = LengthWithHash.default();
 
@@ -336,7 +336,7 @@ export function sendDelayedFromReservation(
   value: u128,
   delay: u32,
 ): Hash | null {
-  let ridPidValue = new TwoHashesWithValue(reservation_id, destination, value);
+  let ridPidValue = new TwoHashesWithValue(reservation_id, destination.value, value);
 
   const res: LengthWithHash = LengthWithHash.default();
 
@@ -379,7 +379,7 @@ export function sendInputWithGasDelayed(
   len: u32,
   delay: u32,
 ): Hash | null {
-  const pidValue = new HashWithValue(destination, value);
+  const pidValue = new HashWithValue(destination.value, value);
 
   const res: LengthWithHash = LengthWithHash.default();
 
@@ -408,7 +408,7 @@ export function sendCommitDelayedFromReservation(
   value: u128,
   delay: u32,
 ): Hash | null {
-  let ridPidValue = new TwoHashesWithValue(reservation_id, destination, value);
+  let ridPidValue = new TwoHashesWithValue(reservation_id, destination.value, value);
 
   const res: LengthWithHash = LengthWithHash.default();
 
@@ -422,7 +422,7 @@ export function sendCommitDelayedFromReservation(
 }
 
 export function sendDelayed(destination: ActorId, payload: Uint8Array, value: u128, delay: u32): Hash | null {
-  const pidValue = new HashWithValue(destination, value);
+  const pidValue = new HashWithValue(destination.value, value);
 
   const res: LengthWithHash = LengthWithHash.default();
 
@@ -446,7 +446,7 @@ export function sendWithGasDelayed(
   value: u128,
   delay: u32,
 ): Hash | null {
-  const pidValue = new HashWithValue(destination, value);
+  const pidValue = new HashWithValue(destination.value, value);
 
   const res: LengthWithHash = LengthWithHash.default();
 
@@ -464,7 +464,7 @@ export function sendCommit(handle: Handle, destination: ActorId, value: u128): H
 }
 
 export function sendCommitDelayed(handle: Handle, destination: ActorId, value: u128, delay: u32): Hash | null {
-  const pidValue = new HashWithValue(destination, value);
+  const pidValue = new HashWithValue(destination.value, value);
   const res: LengthWithHash = LengthWithHash.default();
 
   gr_send_commit(handle, pidValue.ptr, delay, res.ptr);
@@ -487,7 +487,7 @@ export function sendCommitWithGasDelayed(
   value: u128,
   delay: u32,
 ): Hash | null {
-  const pidValue = new HashWithValue(destination, value);
+  const pidValue = new HashWithValue(destination.value, value);
 
   const res: LengthWithHash = LengthWithHash.default();
 
@@ -536,7 +536,7 @@ export function size(): u32 {
 export function source(): ActorId {
   const source = new Uint8Array(32);
   gr_source(<i32>source.dataStart);
-  return source;
+  return new ActorId(source);
 }
 
 export function value(): u128 {

@@ -1,13 +1,13 @@
 {
   "targets": {
     "debug": {
-      "outFile": "../../../build/ping.debug.wasm",
-      "textFile": "../../../build/ping.debug.wat",
+      "outFile": "../../../build/sum.debug.wasm",
+      "textFile": "../../../build/sum.debug.wat",
       "debug": true
     },
     "release": {
-      "outFile": "../../../build/ping.wasm",
-      "textFile": "../../../build/ping.wat",
+      "outFile": "../../../build/sum.wasm",
+      "textFile": "../../../build/sum.wat",
       "optimizeLevel": 3,
       "shrinkLevel": 0
     }
@@ -21,6 +21,8 @@
     "exportRuntime": true,
     "disable": ["bulk-memory"],
     "use": ["abort="],
-    "noAssert": true
+    "stackSize": 1048576,
+    "noAssert": true,
+    "runtimeFeatures": 2
   }
 }

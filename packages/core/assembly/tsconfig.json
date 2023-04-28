@@ -3,5 +3,5 @@
   "compilerOptions": {
     "strictPropertyInitialization": false
   },
-  "include": ["./**/*.ts", "index.ts"]
+  "include": ["./**/*.ts"]
 }

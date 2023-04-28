@@ -1,5 +1,5 @@
+import { decodeNumber, encodeNumber } from 'as-scale-codec/assembly';
 import { u128 } from 'as-bignum/assembly';
-import { decodeNumber, encodeNumber } from 'as-scale-codec';
 
 /** Represents byte type */
 export type Ptr<T> = i32;

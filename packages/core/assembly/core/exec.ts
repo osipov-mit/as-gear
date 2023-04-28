@@ -42,7 +42,7 @@ export function blockTimestamp(): u64 {
 }
 
 export function exit(inheritor_id: ActorId): void {
-  gr_exit(<i32>inheritor_id.dataStart);
+  gr_exit(<i32>inheritor_id.value.dataStart);
 }
 
 export function reserveGas(amount: u64, duration: u32): ReservationId | null {
@@ -133,13 +133,13 @@ export function wakeDelayed(messageId: MessageId, delay: u32): void | null {
 export function programId(): ActorId {
   const program_id = new Uint8Array(32).fill(0);
   gr_program_id(<i32>program_id.dataStart);
-  return program_id;
+  return new ActorId(program_id);
 }
 
 export function origin(): ActorId {
   const origin = new Uint8Array(32).fill(0);
   gr_origin(<i32>origin.dataStart);
-  return origin;
+  return new ActorId(origin);
 }
 
 export function random(subject: Hash): BlockNumberWithHash | null {

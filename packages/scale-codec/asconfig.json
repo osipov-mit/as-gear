@@ -19,7 +19,6 @@
     "converge": false,
     "exportRuntime": true,
     "disable": ["bulk-memory"],
-    "noAssert": true,
-    "bindings": "esm"
+    "noAssert": true
   }
 }

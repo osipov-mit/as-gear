@@ -41,4 +41,10 @@ export class BaseInt<T extends number> extends CodecClass implements Codec {
   notEq(other: BaseInt<T>): bool {
     return this.value != other.value;
   }
+
+  @inline
+  @operator('+')
+  add(other: BaseInt<T>): BaseInt<T> {
+    return new BaseInt<T>(<T>(this._value + other.value));
+  }
 }
