@@ -40,7 +40,7 @@ import {
   gr_send_push,
 } from '../sys';
 import { u128ToPtr } from '../util';
-import { getError, panic } from './utils';
+import { debug, getError, panic } from './utils';
 import { ActorId } from './types';
 
 export function status_code(): i32 {

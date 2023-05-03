@@ -16,13 +16,13 @@
     "importMemory": true,
     "noExportMemory": true,
     "runtime": "../../core/assembly/runtime/gear",
-    "exportStart": "nostart",
+    "exportStart": "_start",
     "converge": false,
     "exportRuntime": true,
-    "disable": ["bulk-memory"],
+    "disable": ["bulk-memory", "mutable-globals"],
     "use": ["abort="],
     "stackSize": 1048576,
     "noAssert": true,
-    "runtimeFeatures": 2
+    "memoryBase": 8
   }
 }

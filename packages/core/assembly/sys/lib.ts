@@ -32,10 +32,10 @@ export type StatusCode = i32;
 export type Value = u128;
 
 const SIZE_OF_LENGTH = <u8>sizeof<Length>();
-const SIZE_OF_HASH = <u8>32;
+const SIZE_OF_HASH = <u8>0x20;
 const SIZE_OF_STATUS_CODE = <u8>sizeof<StatusCode>();
 const SIZE_OF_BN = <u8>sizeof<BlockNumber>();
-const SIZE_OF_VALUE = <u8>sizeof<Value>();
+const SIZE_OF_VALUE = <u8>0x10;
 const SIZE_OF_HANDLE = <u8>sizeof<Handle>();
 const SIZE_OF_GAS = <u8>sizeof<Gas>();
 

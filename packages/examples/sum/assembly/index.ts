@@ -18,13 +18,9 @@ class State {
   }
 }
 
-// @ts-ignore: decorator
-@global
-const STATE = new State();
+let STATE = new State();
 
-// @ts-ignore: decorator
-@global
-const MESSAGE_LOG = new Vec<ScaleString>();
+let MESSAGE_LOG = new Vec<ScaleString>();
 
 export function init(): void {
   let bytes = new Uint8Array(size());
@@ -37,24 +33,36 @@ export function init(): void {
 }
 
 export function handle(): void {
+  debug(`(handle) start...`);
   const bytes = new Uint8Array(size());
   read(bytes);
 
+  debug(`(handle) bytes: ${bytes}`);
+
   const new_msg = I32.decode(bytes);
+
+  debug(`(handle) new_msg: ${new_msg}`);
 
   MESSAGE_LOG.push(ScaleString.from(`(sum) New msg: ${new_msg}`));
 
+  debug(`(handle) messages length: ${MESSAGE_LOG.length}`);
+
   const sum = new_msg.add(new_msg);
+
+  new Uint8Array(16).fill(0);
+  debug(`(handle) sum: ${sum}`);
 
   debug(`(handle) sentTo.isSome: ${STATE.sendTo.isSome}`);
 
   if (STATE.sendTo.isSome) {
-    send(STATE.sendTo.unwrap(), sum.encode(), u128.from(0));
+    debug(`(handle) send msg`);
+    send(STATE.sendTo.unwrap(), sum.encode(), u128.Zero);
+    debug('(handle) msg sent');
   }
 
-  debug(`${MESSAGE_LOG.length} total message stored:`);
+  debug(`(handle) ${MESSAGE_LOG.length} total message stored:`);
 
   for (let i = 0; i < MESSAGE_LOG.length; i++) {
-    debug(MESSAGE_LOG[i].value);
+    debug(`(handle) ${MESSAGE_LOG[i]}`);
   }
 }

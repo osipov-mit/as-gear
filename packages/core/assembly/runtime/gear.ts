@@ -129,11 +129,11 @@ export function __unpin(ptr: usize): void {
 // @ts-ignore: decorator
 @global @unsafe
 function __visit(ptr: usize, cookie: u32): void { // eslint-disable-line @typescript-eslint/no-unused-vars
-  // nop
+  // trace(`VISIT GLOBAL ${ptr}, ${cookie}`)
 }
 
 // @ts-ignore: decorator
 @global @unsafe
 export function __collect(): void {
-  // nop
+  // __visit_globals(8)
 }

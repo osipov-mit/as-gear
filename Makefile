@@ -1,12 +1,12 @@
 build_ping:
 	@npx lerna run --scope ping asbuild:release
-	@wasm-proc build/ping.wasm
+	@wasm-proc --skip-stack-end build/ping.wasm
 	@rm -f build/ping*.meta.wasm
 	@ls -l build/ping*.wasm
 
 build_sum:
 	@npx lerna run --scope sum asbuild:debug
-	@wasm-proc build/sum.debug.wasm
+	@wasm-proc build/sum.debug.wasm --skip-stack-end
 	@rm -f build/sum*.meta.wasm
 	@ls -l build/sum*.wasm
 

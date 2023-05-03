@@ -18,7 +18,7 @@
     "start": "npx serve ."
   },
   "devDependencies": {
-    "assemblyscript": "0.27.2",
+    "assemblyscript": "file:../assemblyscript",
     "as-scale-codec": "*",
     "as-gear-core": "*"
   }
