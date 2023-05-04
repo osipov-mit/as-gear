@@ -1,5 +1,5 @@
 {
-  "extends": "../../../../node_modules/@as-pect/core/node_modules/assemblyscript/std/assembly.json",
+  "extends": "assemblyscript/std/assembly.json",
   "include": ["./**/*.ts"],
   "compilerOptions": {
     "strictPropertyInitialization": false

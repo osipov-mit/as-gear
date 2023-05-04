@@ -19,7 +19,7 @@
     "exportStart": "_start",
     "converge": false,
     "exportRuntime": true,
-    "disable": ["bulk-memory", "mutable-globals"],
+    "disable": ["bulk-memory"],
     "use": ["abort="],
     "stackSize": 1048576,
     "noAssert": true,
