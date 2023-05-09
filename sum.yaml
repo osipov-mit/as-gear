@@ -4,7 +4,7 @@ accounts:
 programs:
   - id: 0
     name: sum
-    path_to_wasm: ./sum.new.opt.wasm
+    path_to_wasm: ./sum-call.opt.wasm
     payload: '0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d'
 
 transactions: 
