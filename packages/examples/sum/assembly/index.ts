@@ -30,9 +30,19 @@ export function init(): void {
 
   STATE.sendTo = Option.Some<ActorId>(actor);
   debug(`(init) sentTo.isSome: ${STATE.sendTo.isSome}`);
+
+  let base_offset = __save_state();
+  store<i32>(base_offset, changetype<i32>(STATE));
+  store<i32>(base_offset + 4, changetype<i32>(MESSAGE_LOG));
 }
 
 export function handle(): void {
+  {
+    let base_offset = __load_state();
+    STATE = changetype<State>(load<i32>(base_offset));
+    MESSAGE_LOG = changetype<Vec<ScaleString>>(load<i32>(base_offset + 4));
+  }
+
   debug(`(handle) start...`);
   const bytes = new Uint8Array(size());
   read(bytes);
@@ -65,4 +75,8 @@ export function handle(): void {
   for (let i = 0; i < MESSAGE_LOG.length; i++) {
     debug(`(handle) ${MESSAGE_LOG[i]}`);
   }
+
+  let base_offset = __save_state();
+  store<i32>(base_offset, changetype<i32>(STATE));
+  store<i32>(base_offset + 4, changetype<i32>(MESSAGE_LOG));
 }

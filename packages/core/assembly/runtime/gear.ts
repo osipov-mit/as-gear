@@ -14,6 +14,20 @@ export declare function alloc(r: i32): i32;
 // @ts-ignore: decorator
 @lazy let offset: usize = startOffset;
 
+@global
+export function __save_state(): usize {
+  store<i32>(0, startOffset);
+  store<i32>(4, offset);
+  return 8;
+}
+
+@global
+export function __load_state(): usize {
+  startOffset = changetype<usize>(load<i32>(0));
+  offset = changetype<usize>(load<i32>(4));
+  return 8;
+}
+
 function maybeGrowMemory(newOffset: usize): void {
   // assumes newOffset is aligned
   let pagesBefore = memory.size();
