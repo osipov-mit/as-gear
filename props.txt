@@ -1,0 +1,20 @@
+field1 [
+  'kind',             'name',
+  'internalName',     'program',
+  'flags',            'decoratorFlags',
+  'members',          'shadowType',
+  'parent',           'declaration',
+  'fieldDeclaration', 'getterPrototype',
+  'setterPrototype',  'instance',
+  'boundPrototypes'
+]
+field2 [
+  'kind',             'name',
+  'internalName',     'program',
+  'flags',            'decoratorFlags',
+  'members',          'shadowType',
+  'parent',           'declaration',
+  'fieldDeclaration', 'getterPrototype',
+  'setterPrototype',  'instance',
+  'boundPrototypes'
+]

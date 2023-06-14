@@ -21,6 +21,13 @@ export class CodecClass implements Codec {
     return this._bytesLen;
   }
 
+  get bytes(): Uint8Array {
+    if (this._bytes) {
+      return this._bytes as Uint8Array;
+    }
+    return new Uint8Array(0);
+  }
+
   toHex(): string {
     if (!this._bytes) {
       this.encode();

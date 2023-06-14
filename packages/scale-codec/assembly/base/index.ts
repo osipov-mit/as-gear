@@ -6,3 +6,4 @@ export * from './Result';
 // export * from './Set';
 export * from './String';
 export * from './Vec';
+export * from './Codec';

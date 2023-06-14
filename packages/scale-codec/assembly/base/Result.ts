@@ -29,10 +29,10 @@ export class Result<Ok extends Codec, Err extends Codec> extends CodecClass impl
   decode(value: Uint8Array): void {
     this._isOk = value.at(0) == 0;
     if (this.isOk) {
-      this._ok = instantiate<Ok>() as Ok;
+      this._ok = instantiate<Ok>();
       this._ok!.decode(value.slice(1));
     } else {
-      this._err = instantiate<Err>() as Err;
+      this._err = instantiate<Err>();
       this._err!.decode(value.slice(1));
     }
     this._bytesLen = (this.isOk ? this._ok!.bytesLen : this._err!.bytesLen) + 1;

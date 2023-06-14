@@ -21,6 +21,11 @@ export class ScaleString extends CodecClass implements Codec {
     return result;
   }
 
+  decodeFromUtf8(value: Uint8Array): void {
+    this._bytesLen = value.length;
+    this._value = String.UTF8.decode(value.buffer);
+  }
+
   decode(value: Uint8Array): void {
     const len = CompactInt.decode(value);
     this._bytesLen = len.bytesLen + <i32>len.value;
@@ -40,6 +45,12 @@ export class ScaleString extends CodecClass implements Codec {
 
   static from(value: string): ScaleString {
     return new ScaleString(value);
+  }
+
+  static fromUTF8(value: Uint8Array): ScaleString {
+    const str = new ScaleString();
+    str.decodeFromUtf8(value);
+    return str;
   }
 
   toString(): string {

@@ -1,0 +1,21 @@
+ol {
+  kind: 43,
+  value: Xe {
+    kind: 6,
+    range: ae { start: 976, end: 981, debugInfoRef: 0, source: [vn] },
+    text: 'bytes',
+    isQuoted: false
+  }
+}
+[2K[1GDone in 0.81s.
+
+ 
+
+ >  Lerna (powered by Nx)   Successfully ran target asbuild:debug for project struct
+
+
+-rw-r--r--  1 dmitriiosipov  staff  16692 Jun 14 11:33 build/struct.debug.cannon.size-opt.wasm
+-rw-r--r--  1 dmitriiosipov  staff  31826 Jun 14 11:33 build/struct.debug.cannon.wasm
+-rw-r--r--  1 dmitriiosipov  staff  12457 Jun 14 11:33 build/struct.debug.opt.wasm
+-rw-r--r--  1 dmitriiosipov  staff  31681 Jun 14 11:33 build/struct.debug.wasm
+-rw-r--r--  1 dmitriiosipov  staff  15723 Jun 12 12:02 build/struct.wasm

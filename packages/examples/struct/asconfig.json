@@ -1,0 +1,28 @@
+{
+  "targets": {
+    "debug": {
+      "outFile": "../../../build/struct.debug.wasm",
+      "textFile": "../../../build/struct.debug.wat",
+      "debug": true
+    },
+    "release": {
+      "outFile": "../../../build/struct.wasm",
+      "textFile": "../../../build/struct.wat",
+      "optimizeLevel": 3,
+      "shrinkLevel": 0
+    }
+  },
+  "options": {
+    "importMemory": true,
+    "noExportMemory": true,
+    "runtime": "../../core/assembly/runtime/gear",
+    "exportStart": "_start",
+    "converge": false,
+    "exportRuntime": true,
+    "disable": ["bulk-memory"],
+    "use": ["abort="],
+    "stackSize": 1048576,
+    "noAssert": true,
+    "memoryBase": 8
+  }
+}

@@ -31,6 +31,7 @@ export class Option<T extends Codec> extends CodecClass implements Codec {
       this._value.decode(value.slice(1));
     }
     this._bytesLen = this.isNone ? 1 : this._value.bytesLen + 1;
+    this._bytes = value.slice(0, this._bytesLen);
   }
 
   static decode<T extends Codec>(value: Uint8Array): Option<T> {
