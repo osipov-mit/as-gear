@@ -18,6 +18,7 @@
     "test:ci": "asp --summary"
   },
   "dependencies": {
-    "as-bignum": "^0.2.30"
+    "as-bignum": "^0.2.30",
+    "as-gear-core": "*"
   }
 }

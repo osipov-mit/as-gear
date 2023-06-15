@@ -7,3 +7,4 @@ export * from './Result';
 export * from './String';
 export * from './Vec';
 export * from './Codec';
+export * from './ActorId';

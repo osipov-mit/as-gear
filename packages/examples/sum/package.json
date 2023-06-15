@@ -18,6 +18,7 @@
     "as-bignum": "^0.2.30",
     "as-scale-codec": "*",
     "as-gear-core": "*",
+    "as-gear-std": "*",
     "transformer": "*"
   }
 }

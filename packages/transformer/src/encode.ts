@@ -6,10 +6,13 @@ import {
   File,
   DeclaredElement,
   ClassDeclaration,
+  ClassPrototype,
+  AssertionKind,
 } from 'assemblyscript/dist/assemblyscript.js';
 import { Generator } from './statements.js';
 
-export function generateEncodeStructFunc(f: File, members: Map<string, DeclaredElement>, elem: DeclaredElement) {
+export function generateEncodeStructFunc(f: File, elem: ClassPrototype) {
+  const members: Map<string, DeclaredElement> | null = elem.instanceMembers;
   const gen = new Generator(f.source.range);
   const props: string[] = [];
 
@@ -30,7 +33,12 @@ export function generateEncodeStructFunc(f: File, members: Map<string, DeclaredE
         gen.varDecl(
           gen.identExp(name),
           CommonFlags.Const,
-          gen.callExp(gen.propAccessExp(gen.propAccessExp(gen.thisExp(), gen.identExp(name)), gen.identExp('encode'))),
+          gen.callExp(
+            gen.propAccessExp(
+              gen.assertExp(AssertionKind.NonNull, gen.propAccessExp(gen.thisExp(), gen.identExp(name))),
+              gen.identExp('encode'),
+            ),
+          ),
         ),
       ]),
     );

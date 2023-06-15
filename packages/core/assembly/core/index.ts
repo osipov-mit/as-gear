@@ -1,6 +1,8 @@
+import * as msg from './msg';
+import * as prog from './prog';
+import * as exec from './exec';
+
 export * from './errors';
-export * from './msg';
-export * from './prog';
-export * from './types';
-export * from './exec';
 export * from './utils';
+
+export { msg, prog, exec };

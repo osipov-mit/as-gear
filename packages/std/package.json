@@ -1,5 +1,5 @@
 {
-  "name": "as-gear-core",
+  "name": "as-gear-std",
   "version": "1.0.0",
   "description": "",
   "main": "./assembly/index.ts",
@@ -14,6 +14,6 @@
   },
   "type": "module",
   "dependencies": {
-    "as-bignum": "^0.2.30"
+    "as-scale-codec": "*"
   }
 }

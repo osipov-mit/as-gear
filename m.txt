@@ -3,7 +3,7 @@
 
 [2K[1G[1myarn run v1.22.17[22m
 [2K[1G[2m$ rm -rf dist && tsc[22m
-[2K[1GDone in 1.10s.
+[2K[1GDone in 0.71s.
 
  
 
@@ -15,11 +15,11 @@
 
 [2K[1G[1myarn run v1.22.17[22m
 [2K[1G[2m$ asc assembly/index.ts --target debug --transform ../../transformer/dist/transformer.js[22m
-ha {
-  kind: 7,
+xr {
+  kind: 1,
   range: ae {
-    start: 577,
-    end: 589,
+    start: 263,
+    end: 281,
     debugInfoRef: 0,
     source: vn {
       kind: 0,
@@ -43,17 +43,6 @@ ha {
         '    super();\n' +
         '    this.field1 = f1;\n' +
         '    this.field2 = f2;\n' +
-        '  }\n' +
-        '\n' +
-        '  decode(value: Uint8Array): void {\n' +
-        '    let bytesLen = 0;\n' +
-        '    this.field1 = new ScaleString();\n' +
-        '    this.field1!.decode(value.slice(bytesLen));\n' +
-        '    bytesLen += this.field1!.bytesLen;\n' +
-        '    this.field2 = new Result<U8, ScaleString>();\n' +
-        '    this.field2!.decode(value.slice(bytesLen));\n' +
-        '    bytesLen += this.field2!.bytesLen;\n' +
-        '    this._bytes = value;\n' +
         '  }\n' +
         '\n' +
         '  static decode(value: Uint8Array): MyStruct {\n' +
@@ -84,20 +73,21 @@ ha {
       simplePath: 'io'
     }
   },
-  assertionKind: 2,
-  expression: wa {
-    kind: 21,
-    range: ae { start: 577, end: 588, debugInfoRef: 0, source: [vn] },
-    expression: Ma { kind: 24, range: [ae], text: 'this', isQuoted: false },
-    property: Xe { kind: 6, range: [ae], text: 'field1', isQuoted: false }
+  isNullable: true,
+  currentlyResolving: false,
+  name: hi {
+    kind: 3,
+    range: ae { start: 263, end: 274, debugInfoRef: 0, source: [vn] },
+    identifier: Xe { kind: 6, range: [ae], text: 'ScaleString', isQuoted: false },
+    next: null
   },
-  toType: null
+  typeArguments: []
 }
-ha {
-  kind: 7,
+xr {
+  kind: 1,
   range: ae {
-    start: 577,
-    end: 589,
+    start: 293,
+    end: 323,
     debugInfoRef: 0,
     source: vn {
       kind: 0,
@@ -121,17 +111,6 @@ ha {
         '    super();\n' +
         '    this.field1 = f1;\n' +
         '    this.field2 = f2;\n' +
-        '  }\n' +
-        '\n' +
-        '  decode(value: Uint8Array): void {\n' +
-        '    let bytesLen = 0;\n' +
-        '    this.field1 = new ScaleString();\n' +
-        '    this.field1!.decode(value.slice(bytesLen));\n' +
-        '    bytesLen += this.field1!.bytesLen;\n' +
-        '    this.field2 = new Result<U8, ScaleString>();\n' +
-        '    this.field2!.decode(value.slice(bytesLen));\n' +
-        '    bytesLen += this.field2!.bytesLen;\n' +
-        '    this._bytes = value;\n' +
         '  }\n' +
         '\n' +
         '  static decode(value: Uint8Array): MyStruct {\n' +
@@ -162,24 +141,42 @@ ha {
       simplePath: 'io'
     }
   },
-  assertionKind: 2,
-  expression: wa {
-    kind: 21,
-    range: ae { start: 577, end: 588, debugInfoRef: 0, source: [vn] },
-    expression: Ma { kind: 24, range: [ae], text: 'this', isQuoted: false },
-    property: Xe { kind: 6, range: [ae], text: 'field1', isQuoted: false }
+  isNullable: true,
+  currentlyResolving: false,
+  name: hi {
+    kind: 3,
+    range: ae { start: 293, end: 299, debugInfoRef: 0, source: [vn] },
+    identifier: Xe { kind: 6, range: [ae], text: 'Result', isQuoted: false },
+    next: null
   },
-  toType: null
+  typeArguments: [
+    xr {
+      kind: 1,
+      range: [ae],
+      isNullable: false,
+      currentlyResolving: false,
+      name: [hi],
+      typeArguments: []
+    },
+    xr {
+      kind: 1,
+      range: [ae],
+      isNullable: false,
+      currentlyResolving: false,
+      name: [hi],
+      typeArguments: []
+    }
+  ]
 }
-[2K[1GDone in 0.77s.
+[2K[1GDone in 0.74s.
 
  
 
  >  Lerna (powered by Nx)   Successfully ran target asbuild:debug for project struct
 
 
--rw-r--r--  1 dmitriiosipov  staff  12227 Jun 15 16:50 build/struct.debug.cannon.size-opt.wasm
--rw-r--r--  1 dmitriiosipov  staff  23541 Jun 15 16:50 build/struct.debug.cannon.wasm
--rw-r--r--  1 dmitriiosipov  staff   9352 Jun 15 16:50 build/struct.debug.opt.wasm
--rw-r--r--  1 dmitriiosipov  staff  23405 Jun 15 16:50 build/struct.debug.wasm
+-rw-r--r--  1 dmitriiosipov  staff  16432 Jun 15 17:08 build/struct.debug.cannon.size-opt.wasm
+-rw-r--r--  1 dmitriiosipov  staff  32120 Jun 15 17:08 build/struct.debug.cannon.wasm
+-rw-r--r--  1 dmitriiosipov  staff  12813 Jun 15 17:08 build/struct.debug.opt.wasm
+-rw-r--r--  1 dmitriiosipov  staff  31954 Jun 15 17:08 build/struct.debug.wasm
 -rw-r--r--  1 dmitriiosipov  staff  15723 Jun 12 12:02 build/struct.wasm

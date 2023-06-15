@@ -10,10 +10,13 @@ import {
   File,
   DeclaredElement,
   ClassDeclaration,
+  ClassPrototype,
+  AssertionKind,
 } from 'assemblyscript/dist/assemblyscript.js';
 import { Generator } from './statements.js';
 
-export function generateDecodeStructFunc(f: File, members: Map<string, DeclaredElement>, elem: DeclaredElement) {
+export function generateDecodeStructFunc(f: File, elem: ClassPrototype) {
+  const members: Map<string, DeclaredElement> | null = elem.instanceMembers;
   const gen = new Generator(f.source.range);
   const props = new Map<string, NamedTypeNode>();
 
@@ -31,20 +34,26 @@ export function generateDecodeStructFunc(f: File, members: Map<string, DeclaredE
   const statements: Statement[] = [];
 
   statements.push(gen.varStatement([gen.varDecl(gen.identExp('bytesLen'), CommonFlags.Let, gen.intLiteralExp())]));
-  for (const [name, type] of Array.from(props.entries())) {
+  for (let [name, type] of Array.from(props.entries())) {
+    const t = gen.namedType(type.name, type.typeArguments);
+    t.isNullable = false;
+    console.log(type);
     statements.push(
       gen.expStatement(
         gen.binaryExp(
           Token.Equals,
           gen.propAccessExp(gen.thisExp(), gen.identExp(name)),
-          gen.newExp(type.name, type.typeArguments),
+          gen.newExp(t.name, t.typeArguments),
         ),
       ),
     );
     statements.push(
       gen.expStatement(
         gen.callExp(
-          gen.propAccessExp(gen.propAccessExp(gen.thisExp(), gen.identExp(name)), gen.identExp('decode')),
+          gen.propAccessExp(
+            gen.assertExp(AssertionKind.NonNull, gen.propAccessExp(gen.thisExp(), gen.identExp(name))),
+            gen.identExp('decode'),
+          ),
           null,
           [
             gen.callExp(gen.propAccessExp(gen.identExp('value'), gen.identExp('slice')), null, [
@@ -59,7 +68,10 @@ export function generateDecodeStructFunc(f: File, members: Map<string, DeclaredE
         gen.binaryExp(
           Token.Plus_Equals,
           gen.identExp('bytesLen'),
-          gen.propAccessExp(gen.propAccessExp(gen.thisExp(), gen.identExp(name)), gen.identExp('bytesLen')),
+          gen.propAccessExp(
+            gen.assertExp(AssertionKind.NonNull, gen.propAccessExp(gen.thisExp(), gen.identExp(name))),
+            gen.identExp('bytesLen'),
+          ),
         ),
       ),
     );

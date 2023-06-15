@@ -1,6 +1,6 @@
 import { u128 } from 'as-bignum/assembly';
-import { ActorId, debug, read, send, size } from 'as-gear-core/assembly';
-import { I32, Option, ScaleString, Vec } from 'as-scale-codec/assembly';
+import { debug, msg } from 'as-gear-core/assembly';
+import { I32, Option, ScaleString, Vec, ActorId } from 'as-scale-codec/assembly';
 
 class State {
   private _sendTo: Option<ActorId>;
@@ -23,8 +23,7 @@ let STATE = new State();
 let MESSAGE_LOG = new Vec<ScaleString>();
 
 export function init(): void {
-  let bytes = new Uint8Array(size());
-  read(bytes);
+  let bytes = msg.read();
 
   const actor = new ActorId(bytes);
 
@@ -34,8 +33,7 @@ export function init(): void {
 
 export function handle(): void {
   debug(`(handle) start...`);
-  const bytes = new Uint8Array(size());
-  read(bytes);
+  const bytes = msg.read();
 
   debug(`(handle) bytes: ${bytes}`);
 
@@ -56,7 +54,7 @@ export function handle(): void {
 
   if (STATE.sendTo.isSome) {
     debug(`(handle) send msg`);
-    send(STATE.sendTo.unwrap(), sum.encode(), u128.Zero);
+    msg.send(STATE.sendTo.unwrap().value, sum.encode(), u128.Zero);
     debug('(handle) msg sent');
   }
 

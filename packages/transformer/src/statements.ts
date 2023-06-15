@@ -26,6 +26,11 @@ import {
   ExpressionStatement,
   VariableStatement,
   ReturnStatement,
+  Signature,
+  ArrowKind,
+  ArrayLiteralExpression,
+  AssertionExpression,
+  AssertionKind,
 } from 'assemblyscript/dist/assemblyscript.js';
 
 export class Generator {
@@ -57,6 +62,14 @@ export class Generator {
 
   intLiteralExp(value: i64 = i64_zero): IntegerLiteralExpression {
     return new IntegerLiteralExpression(value, this.range);
+  }
+
+  arrLiteralExp(exp: Expression[]): ArrayLiteralExpression {
+    return new ArrayLiteralExpression(exp, this.range);
+  }
+
+  assertExp(kind: AssertionKind, exp: Expression, toType: TypeNode | null = null): AssertionExpression {
+    return new AssertionExpression(kind, exp, toType, this.range);
   }
 
   typeName(name: IdentifierExpression): TypeName {
@@ -91,6 +104,15 @@ export class Generator {
     type: TypeNode | null = null,
   ): VariableDeclaration {
     return new VariableDeclaration(name, null, flags, type, initializer, this.range);
+  }
+
+  funcDecl(
+    name: IdentifierExpression,
+    flags: CommonFlags,
+    sig: FunctionTypeNode,
+    body: BlockStatement,
+  ): FunctionDeclaration {
+    return new FunctionDeclaration(name, null, flags, null, sig, body, ArrowKind.None, this.range);
   }
 
   varStatement(decl: VariableDeclaration[]): VariableStatement {

@@ -1,38 +1,21 @@
-import { CodecClass, Option, Result, ScaleString, U8 } from 'as-scale-codec/assembly';
+import { CodecClass, Option, Result, ScaleString, U32, U8 } from 'as-scale-codec/assembly';
+import { InOut, MetadataRepr } from 'as-gear-std/assembly';
 
 //@ts-ignore
 @codec
 //@ts-ignore
 @struct
+//@ts-ignore
+@typeInfo
 class MyStruct extends CodecClass {
-  field1: Option<ScaleString>;
-  field2: Option<Result<U8, ScaleString>>;
+  field1: ScaleString | null;
+  field2: Result<U8, ScaleString> | null;
 
   constructor(f1: ScaleString | null = null, f2: Result<U8, ScaleString> | null = null) {
     super();
-    this.field1 = f1 ? Option.Some<ScaleString>(f1) : Option.None<ScaleString>();
-    this.field2 = f2 ? Option.Some<Result<U8, ScaleString>>(f2) : Option.None<Result<U8, ScaleString>>();
+    this.field1 = f1;
+    this.field2 = f2;
   }
-
-  // encode(): Uint8Array {
-  //   let bytesLen = 0;
-  //   let offset = 0;
-
-  //   const field1 = this.field1.encode();
-  //   bytesLen += field1.byteLength;
-  //   const field2 = this.field2.encode();
-  //   bytesLen += field2.byteLength;
-  //   //
-  //   const bytes = new Uint8Array(bytesLen);
-
-  //   bytes.set(field1, offset);
-  //   offset += field1.byteLength;
-  //   bytes.set(field2, offset);
-
-  //   this._bytesLen = bytesLen;
-  //   this._bytes = bytes;
-  //   return bytes;
-  // }
 
   static decode(value: Uint8Array): MyStruct {
     const result = new MyStruct();
@@ -42,3 +25,14 @@ class MyStruct extends CodecClass {
 }
 
 export { MyStruct };
+
+// @ts-ignore: decorator
+@metadata
+export class ProgramMetadata implements MetadataRepr {
+  init: InOut<MyStruct, MyStruct>;
+  handle: InOut<ScaleString, U8>;
+  reply: InOut<null, null>;
+  others: InOut<null, null>;
+  signal: null;
+  state: null;
+}

@@ -1,5 +1,5 @@
 import { u128 } from 'as-bignum/assembly';
-import { gr_create_program, gr_create_program_wgas, Hash, HashWithValue, LengthWithTwoHashes } from '../sys';
+import { gsys, Hash, HashWithValue, LengthWithTwoHashes } from '../sys';
 import { getError, panic } from './utils';
 import { CodeId, MessageAndActorIds } from './types';
 
@@ -33,7 +33,7 @@ export function createProgramDelayed(
 
   const res: LengthWithTwoHashes = LengthWithTwoHashes.default();
 
-  gr_create_program(
+  gsys.gr_create_program(
     cidValue.ptr,
     <i32>salt.dataStart,
     salt.length,
@@ -63,7 +63,7 @@ export function createProgramWithGasDelayed(
 
   const res: LengthWithTwoHashes = LengthWithTwoHashes.default();
 
-  gr_create_program_wgas(
+  gsys.gr_create_program_wgas(
     cidValue.ptr,
     <i32>salt.dataStart,
     salt.length,
