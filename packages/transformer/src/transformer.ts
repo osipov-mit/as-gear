@@ -9,7 +9,7 @@ import {
   generateEncodeStructFunc,
   generateDecodeStructFunc,
 } from './generate/index.js';
-import { generateStructTypeInfo } from './typeinfo.js';
+import { generateEnumTypeInfo, generateStructTypeInfo } from './typeinfo.js';
 import { generateMetadata, generateMetahashFunc } from './metadata.js';
 
 const lang = new Uint8Array([0x01]);
@@ -67,6 +67,11 @@ class MyTransform extends Transform {
               if (type) {
                 typeInfo[type.name] = type.def;
               }
+            }
+          } else if (hasDecorator('scaleEnum', elem)) {
+            const type = generateEnumTypeInfo(file, <ClassPrototype>elem);
+            if (type) {
+              typeInfo[type.name] = type.def;
             }
           }
         }
