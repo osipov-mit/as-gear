@@ -1,185 +1,28 @@
 
-> transformer:build
+> as-gear-transformer:build
 
 [2K[1G[1myarn run v1.22.17[22m
 [2K[1G[2m$ rm -rf dist && tsc[22m
-[2K[1GDone in 1.10s.
+[2K[1GDone in 0.78s.
 
  
 
- >  Lerna (powered by Nx)   Successfully ran target build for project transformer
+ >  Lerna (powered by Nx)   Successfully ran target build for project as-gear-transformer
 
 
 
-> struct:"asbuild:debug"
+> enum:"asbuild:debug"
 
 [2K[1G[1myarn run v1.22.17[22m
-[2K[1G[2m$ asc assembly/index.ts --target debug --transform ../../transformer/dist/transformer.js[22m
-ha {
-  kind: 7,
-  range: ae {
-    start: 577,
-    end: 589,
-    debugInfoRef: 0,
-    source: vn {
-      kind: 0,
-      range: [ae],
-      sourceKind: 0,
-      normalizedPath: 'assembly/io.ts',
-      text: "import { CodecClass, Option, Result, ScaleString, U32, U8 } from 'as-scale-codec/assembly';\n" +
-        "import { InOut, MetadataRepr } from 'as-gear-std/assembly';\n" +
-        '\n' +
-        '//@ts-ignore\n' +
-        '@codec\n' +
-        '//@ts-ignore\n' +
-        '@struct\n' +
-        '//@ts-ignore\n' +
-        '@typeInfo\n' +
-        'class MyStruct extends CodecClass {\n' +
-        '  field1: ScaleString | null;\n' +
-        '  field2: Result<U8, ScaleString> | null;\n' +
-        '\n' +
-        '  constructor(f1: ScaleString | null = null, f2: Result<U8, ScaleString> | null = null) {\n' +
-        '    super();\n' +
-        '    this.field1 = f1;\n' +
-        '    this.field2 = f2;\n' +
-        '  }\n' +
-        '\n' +
-        '  decode(value: Uint8Array): void {\n' +
-        '    let bytesLen = 0;\n' +
-        '    this.field1 = new ScaleString();\n' +
-        '    this.field1!.decode(value.slice(bytesLen));\n' +
-        '    bytesLen += this.field1!.bytesLen;\n' +
-        '    this.field2 = new Result<U8, ScaleString>();\n' +
-        '    this.field2!.decode(value.slice(bytesLen));\n' +
-        '    bytesLen += this.field2!.bytesLen;\n' +
-        '    this._bytes = value;\n' +
-        '  }\n' +
-        '\n' +
-        '  static decode(value: Uint8Array): MyStruct {\n' +
-        '    const result = new MyStruct();\n' +
-        '    result.decode(value);\n' +
-        '    return result;\n' +
-        '  }\n' +
-        '}\n' +
-        '\n' +
-        'export { MyStruct };\n' +
-        '\n' +
-        '// @ts-ignore: decorator\n' +
-        '@metadata\n' +
-        'export class ProgramMetadata implements MetadataRepr {\n' +
-        '  init: InOut<MyStruct, MyStruct>;\n' +
-        '  handle: InOut<ScaleString, U8>;\n' +
-        '  reply: InOut<null, null>;\n' +
-        '  others: InOut<null, null>;\n' +
-        '  signal: null;\n' +
-        '  state: null;\n' +
-        '}\n',
-      statements: [Array],
-      debugInfoIndex: -1,
-      exportPaths: null,
-      lineCache: null,
-      lineColumn: 1,
-      internalPath: 'assembly/io',
-      simplePath: 'io'
-    }
-  },
-  assertionKind: 2,
-  expression: wa {
-    kind: 21,
-    range: ae { start: 577, end: 588, debugInfoRef: 0, source: [vn] },
-    expression: Ma { kind: 24, range: [ae], text: 'this', isQuoted: false },
-    property: Xe { kind: 6, range: [ae], text: 'field1', isQuoted: false }
-  },
-  toType: null
-}
-ha {
-  kind: 7,
-  range: ae {
-    start: 577,
-    end: 589,
-    debugInfoRef: 0,
-    source: vn {
-      kind: 0,
-      range: [ae],
-      sourceKind: 0,
-      normalizedPath: 'assembly/io.ts',
-      text: "import { CodecClass, Option, Result, ScaleString, U32, U8 } from 'as-scale-codec/assembly';\n" +
-        "import { InOut, MetadataRepr } from 'as-gear-std/assembly';\n" +
-        '\n' +
-        '//@ts-ignore\n' +
-        '@codec\n' +
-        '//@ts-ignore\n' +
-        '@struct\n' +
-        '//@ts-ignore\n' +
-        '@typeInfo\n' +
-        'class MyStruct extends CodecClass {\n' +
-        '  field1: ScaleString | null;\n' +
-        '  field2: Result<U8, ScaleString> | null;\n' +
-        '\n' +
-        '  constructor(f1: ScaleString | null = null, f2: Result<U8, ScaleString> | null = null) {\n' +
-        '    super();\n' +
-        '    this.field1 = f1;\n' +
-        '    this.field2 = f2;\n' +
-        '  }\n' +
-        '\n' +
-        '  decode(value: Uint8Array): void {\n' +
-        '    let bytesLen = 0;\n' +
-        '    this.field1 = new ScaleString();\n' +
-        '    this.field1!.decode(value.slice(bytesLen));\n' +
-        '    bytesLen += this.field1!.bytesLen;\n' +
-        '    this.field2 = new Result<U8, ScaleString>();\n' +
-        '    this.field2!.decode(value.slice(bytesLen));\n' +
-        '    bytesLen += this.field2!.bytesLen;\n' +
-        '    this._bytes = value;\n' +
-        '  }\n' +
-        '\n' +
-        '  static decode(value: Uint8Array): MyStruct {\n' +
-        '    const result = new MyStruct();\n' +
-        '    result.decode(value);\n' +
-        '    return result;\n' +
-        '  }\n' +
-        '}\n' +
-        '\n' +
-        'export { MyStruct };\n' +
-        '\n' +
-        '// @ts-ignore: decorator\n' +
-        '@metadata\n' +
-        'export class ProgramMetadata implements MetadataRepr {\n' +
-        '  init: InOut<MyStruct, MyStruct>;\n' +
-        '  handle: InOut<ScaleString, U8>;\n' +
-        '  reply: InOut<null, null>;\n' +
-        '  others: InOut<null, null>;\n' +
-        '  signal: null;\n' +
-        '  state: null;\n' +
-        '}\n',
-      statements: [Array],
-      debugInfoIndex: -1,
-      exportPaths: null,
-      lineCache: null,
-      lineColumn: 1,
-      internalPath: 'assembly/io',
-      simplePath: 'io'
-    }
-  },
-  assertionKind: 2,
-  expression: wa {
-    kind: 21,
-    range: ae { start: 577, end: 588, debugInfoRef: 0, source: [vn] },
-    expression: Ma { kind: 24, range: [ae], text: 'this', isQuoted: false },
-    property: Xe { kind: 6, range: [ae], text: 'field1', isQuoted: false }
-  },
-  toType: null
-}
+[2K[1G[2m$ asc assembly/index.ts --target debug --transform ../../../node_modules/as-gear-transformer/dist/transformer.js[22m
 [2K[1GDone in 0.77s.
 
  
 
- >  Lerna (powered by Nx)   Successfully ran target asbuild:debug for project struct
+ >  Lerna (powered by Nx)   Successfully ran target asbuild:debug for project enum
 
 
--rw-r--r--  1 dmitriiosipov  staff  12227 Jun 15 16:50 build/struct.debug.cannon.size-opt.wasm
--rw-r--r--  1 dmitriiosipov  staff  23541 Jun 15 16:50 build/struct.debug.cannon.wasm
--rw-r--r--  1 dmitriiosipov  staff   9352 Jun 15 16:50 build/struct.debug.opt.wasm
--rw-r--r--  1 dmitriiosipov  staff  23405 Jun 15 16:50 build/struct.debug.wasm
--rw-r--r--  1 dmitriiosipov  staff  15723 Jun 12 12:02 build/struct.wasm
+-rw-r--r--  1 dmitriiosipov  staff  22551 Jun 18 12:00 build/enum.debug.cannon.size-opt.wasm
+-rw-r--r--  1 dmitriiosipov  staff  47914 Jun 18 12:00 build/enum.debug.cannon.wasm
+-rw-r--r--  1 dmitriiosipov  staff  17697 Jun 18 12:00 build/enum.debug.opt.wasm
+-rw-r--r--  1 dmitriiosipov  staff  47752 Jun 18 12:00 build/enum.debug.wasm

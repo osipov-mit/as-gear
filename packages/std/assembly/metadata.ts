@@ -13,3 +13,5 @@ export interface MetadataRepr {
   signal: CodecClass | null;
   state: CodecClass | null;
 }
+
+export declare function Metadata(): void;

@@ -1,11 +1,16 @@
 import { Transform } from 'assemblyscript/dist/transform.js';
 import { ClassPrototype, ElementKind, Program, File } from 'assemblyscript/dist/assemblyscript.js';
+import { blake2b } from 'blakejs';
+
 import { isUserFile, isUserEntryFile, hasDecorator, u8aToHex } from './utils.js';
-import { generateDecodeStructFunc } from './decode.js';
-import { generateEncodeStructFunc } from './encode.js';
+import {
+  generateEncodeEnumFunc,
+  generateDecodeEnumFunc,
+  generateEncodeStructFunc,
+  generateDecodeStructFunc,
+} from './generate/index.js';
 import { generateStructTypeInfo } from './typeinfo.js';
 import { generateMetadata, generateMetahashFunc } from './metadata.js';
-import { blake2b } from '../../../node_modules/blakejs/index.js';
 
 const lang = new Uint8Array([0x01]);
 
@@ -24,22 +29,32 @@ class MyTransform extends Transform {
         entryFile = f;
       }
       for (const elem of Array.from(f.members?.values() || [])) {
+        const file = elem.parent as File;
         if (hasDecorator('codec', elem)) {
           if (hasDecorator('struct', elem)) {
             if (elem.kind === ElementKind.ClassPrototype) {
               const members = (<ClassPrototype>elem).instanceMembers;
               if (!members) continue;
               if (!members.has('decode')) {
-                const decodeMethod = generateDecodeStructFunc(f, <ClassPrototype>elem);
+                const decodeMethod = generateDecodeStructFunc(file, <ClassPrototype>elem);
                 (<ClassPrototype>elem).instanceMembers?.set('decode', decodeMethod);
               }
-              // else {
-              //   console.log(
-              //     (members as any).get('decode')?.declaration.body.statements[2].expression.expression.expression,
-              //   );
-              // }
               if (!members.has('encode')) {
-                const encodeMethod = generateEncodeStructFunc(f, <ClassPrototype>elem);
+                const encodeMethod = generateEncodeStructFunc(file, <ClassPrototype>elem);
+                (<ClassPrototype>elem).instanceMembers?.set('encode', encodeMethod);
+              }
+            }
+          }
+          if (hasDecorator('scaleEnum', elem)) {
+            if (elem.kind === ElementKind.ClassPrototype && f.name === elem.parent.name) {
+              const members = (<ClassPrototype>elem).instanceMembers;
+              if (!members) continue;
+              if (!members.has('decode')) {
+                const decodeMethod = generateDecodeEnumFunc(file, <ClassPrototype>elem);
+                (<ClassPrototype>elem).instanceMembers?.set('decode', decodeMethod);
+              }
+              if (!members.has('encode')) {
+                const encodeMethod = generateEncodeEnumFunc(file, <ClassPrototype>elem);
                 (<ClassPrototype>elem).instanceMembers?.set('encode', encodeMethod);
               }
             }

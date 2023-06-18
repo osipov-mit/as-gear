@@ -4,15 +4,12 @@ import {
   PropertyPrototype,
   DeclaredElement,
   ClassPrototype,
-  TypeParameterNode,
-  FunctionPrototype,
   File,
-  Range,
   CommonFlags,
   Statement,
 } from 'assemblyscript/dist/assemblyscript.js';
 import { getTypeName } from './utils.js';
-import { Generator } from './statements.js';
+import { Generator } from './generate/generator.js';
 
 export function generateMetadata(elem: ClassPrototype) {
   const members: Map<string, DeclaredElement> | null = elem.instanceMembers;
@@ -90,6 +87,5 @@ export function generateMetahashFunc(metahash: Uint8Array, parent: File) {
     ),
   );
 
-  // console.log((func.declaration as any).body.statements[0].declarations[0]);
   return func;
 }

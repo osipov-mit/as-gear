@@ -763,6 +763,13 @@ as-gear-std@*, "as-gear-std@file:/Users/dmitriiosipov/gear/assemblyscript/as-gea
   dependencies:
     as-scale-codec "*"
 
+"as-gear-transformer@file:/Users/dmitriiosipov/gear/assemblyscript/as-gear/packages/transformer":
+  version "1.0.0"
+  resolved "file:packages/transformer"
+  dependencies:
+    assert "^2.0.0"
+    blakejs "^1.2.1"
+
 as-scale-codec@*, "as-scale-codec@file:/Users/dmitriiosipov/gear/assemblyscript/as-gear/packages/scale-codec":
   version "1.0.0"
   resolved "file:packages/scale-codec"
@@ -4433,7 +4440,7 @@ tr46@~0.0.3:
   resolved "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
-transformer@*, "transformer@file:/Users/dmitriiosipov/gear/assemblyscript/as-gear/packages/transformer":
+transformer@*:
   version "1.0.0"
   resolved "file:packages/transformer"
   dependencies:

@@ -13,7 +13,7 @@ import {
   ClassPrototype,
   AssertionKind,
 } from 'assemblyscript/dist/assemblyscript.js';
-import { Generator } from './statements.js';
+import { Generator } from '../generate/generator.js';
 
 export function generateDecodeStructFunc(f: File, elem: ClassPrototype) {
   const members: Map<string, DeclaredElement> | null = elem.instanceMembers;
@@ -37,7 +37,6 @@ export function generateDecodeStructFunc(f: File, elem: ClassPrototype) {
   for (let [name, type] of Array.from(props.entries())) {
     const t = gen.namedType(type.name, type.typeArguments);
     t.isNullable = false;
-    console.log(type);
     statements.push(
       gen.expStatement(
         gen.binaryExp(

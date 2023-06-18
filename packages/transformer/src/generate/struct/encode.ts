@@ -9,7 +9,7 @@ import {
   ClassPrototype,
   AssertionKind,
 } from 'assemblyscript/dist/assemblyscript.js';
-import { Generator } from './statements.js';
+import { Generator } from '../generator.js';
 
 export function generateEncodeStructFunc(f: File, elem: ClassPrototype) {
   const members: Map<string, DeclaredElement> | null = elem.instanceMembers;

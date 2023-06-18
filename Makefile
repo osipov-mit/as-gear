@@ -1,3 +1,11 @@
+enum:
+	@npx lerna run --scope enum asbuild:debug
+	@./wasm-proc --skip-stack-end build/enum.debug.wasm
+	@rm -f build/enum*.meta.wasm
+	@ls -l build/enum*.wasm
+
+build_enum: build_transformer enum
+
 struct:
 	@npx lerna run --scope struct asbuild:debug
 	@./wasm-proc --skip-stack-end build/struct.debug.wasm
@@ -21,7 +29,7 @@ build_sum:
 build_examples: build_ping build_sum
 
 build_transformer:
-	@npx lerna run --scope transformer build
+	@npx lerna run --scope as-gear-transformer build
 
 run_sum_workflow:
 	@gear-js workflow ./sum.yaml

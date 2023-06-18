@@ -26,11 +26,15 @@ import {
   ExpressionStatement,
   VariableStatement,
   ReturnStatement,
-  Signature,
   ArrowKind,
   ArrayLiteralExpression,
   AssertionExpression,
   AssertionKind,
+  SwitchStatement,
+  SwitchCase,
+  BreakStatement,
+  ThrowStatement,
+  StringLiteralExpression,
 } from 'assemblyscript/dist/assemblyscript.js';
 
 export class Generator {
@@ -68,8 +72,16 @@ export class Generator {
     return new ArrayLiteralExpression(exp, this.range);
   }
 
+  strLiteralExp(value: string): StringLiteralExpression {
+    return new StringLiteralExpression(value, this.range);
+  }
+
   assertExp(kind: AssertionKind, exp: Expression, toType: TypeNode | null = null): AssertionExpression {
     return new AssertionExpression(kind, exp, toType, this.range);
+  }
+
+  switchCaseExp(label: Expression | null, statements: Statement[]): SwitchCase {
+    return new SwitchCase(label, statements, this.range);
   }
 
   typeName(name: IdentifierExpression): TypeName {
@@ -115,6 +127,10 @@ export class Generator {
     return new FunctionDeclaration(name, null, flags, null, sig, body, ArrowKind.None, this.range);
   }
 
+  switchStatement(condition: Expression, cases: SwitchCase[]): SwitchStatement {
+    return new SwitchStatement(condition, cases, this.range);
+  }
+
   varStatement(decl: VariableDeclaration[]): VariableStatement {
     return new VariableStatement(null, decl, this.range);
   }
@@ -131,7 +147,15 @@ export class Generator {
     return new ReturnStatement(value, this.range);
   }
 
+  breakStatement(): BreakStatement {
+    return new BreakStatement(null, this.range);
+  }
+
   funcPrototype(name: string, parent: Element, decl: FunctionDeclaration): FunctionPrototype {
     return new FunctionPrototype(name, parent, decl);
+  }
+
+  throwStatement(value: Expression): ThrowStatement {
+    return new ThrowStatement(value, this.range);
   }
 }
