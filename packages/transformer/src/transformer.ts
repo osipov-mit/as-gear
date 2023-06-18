@@ -1,5 +1,12 @@
 import { Transform } from 'assemblyscript/dist/transform.js';
-import { ClassPrototype, ElementKind, Program, File } from 'assemblyscript/dist/assemblyscript.js';
+import {
+  ClassPrototype,
+  ElementKind,
+  Program,
+  File,
+  TypeRef,
+  ExpressionRef,
+} from 'assemblyscript/dist/assemblyscript.js';
 import { blake2b } from 'blakejs';
 
 import { isUserFile, isUserEntryFile, hasDecorator, u8aToHex } from './utils.js';
@@ -11,6 +18,7 @@ import {
 } from './generate/index.js';
 import { generateEnumTypeInfo, generateStructTypeInfo } from './typeinfo.js';
 import { generateMetadata, generateMetahashFunc } from './metadata.js';
+import { Module } from 'types:assemblyscript/src/module';
 
 const lang = new Uint8Array([0x01]);
 
@@ -101,6 +109,11 @@ class MyTransform extends Transform {
     entryFile?.members?.set('metahash', metahashFunc);
     entryFile?.exports?.set('metahash', metahashFunc);
     this.writeFile('meta.txt', u8aToHex(u8a), '.');
+  }
+
+  afterCompile(module: Module): void | Promise<void> {
+    module.addGlobalExport('~lib/memory/__data_end', '__data_end');
+    module.addGlobalExport('~lib/memory/__stack_pointer', '__stack_pointer');
   }
 }
 

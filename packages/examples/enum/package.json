@@ -9,7 +9,7 @@
   },
   "scripts": {
     "asbuild:debug": "asc assembly/index.ts --target debug --transform ../../../node_modules/as-gear-transformer/dist/transformer.js",
-    "asbuild:release": "asc assembly/index.ts --target release",
+    "asbuild:release": "asc assembly/index.ts --target release --transform ../../../node_modules/as-gear-transformer/dist/transformer.js",
     "asbuild": "npm run asbuild:debug && npm run asbuild:release",
     "test": "node tests"
   },

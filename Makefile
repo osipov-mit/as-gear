@@ -1,6 +1,7 @@
 enum:
 	@npx lerna run --scope enum asbuild:debug
-	@./wasm-proc --skip-stack-end build/enum.debug.wasm
+	@./wasm-proc --assembly-script build/enum.debug.wasm
+	# @./wasm-proc --skip-stack-end build/enum.debug.wasm
 	@rm -f build/enum*.meta.wasm
 	@ls -l build/enum*.wasm
 
@@ -8,7 +9,7 @@ build_enum: build_transformer enum
 
 struct:
 	@npx lerna run --scope struct asbuild:debug
-	@./wasm-proc --skip-stack-end build/struct.debug.wasm
+	@./wasm-proc build/struct.debug.wasm
 	@rm -f build/struct*.meta.wasm
 	@ls -l build/struct*.wasm
 
