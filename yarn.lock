@@ -752,7 +752,7 @@ as-bignum@^0.2.30:
   integrity sha512-4DRQ9pHu8BCfse4xvZucg5t7mkDtiM93dBzZkXpcpAJ2fmf+p/wbYxN24nCvRVACRPavPYreea5k3ugWD1C3Fg==
 
 as-gear-core@*, "as-gear-core@file:/Users/dmitriiosipov/gear/assemblyscript/as-gear/packages/core":
-  version "1.0.0"
+  version "0.0.1"
   resolved "file:packages/core"
   dependencies:
     as-bignum "^0.2.30"
@@ -1477,6 +1477,9 @@ enquirer@~2.3.6:
   integrity sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg==
   dependencies:
     ansi-colors "^4.1.1"
+
+"enum@file:/Users/dmitriiosipov/gear/assemblyscript/as-gear/packages/examples/enum":
+  resolved "file:packages/examples/enum"
 
 env-paths@^2.2.0:
   version "2.2.1"
@@ -3570,6 +3573,10 @@ pacote@^15.0.0, pacote@^15.0.8, pacote@15.1.1:
     sigstore "^1.0.0"
     ssri "^10.0.0"
     tar "^6.1.11"
+
+"panic@file:/Users/dmitriiosipov/gear/assemblyscript/as-gear/packages/examples/panic":
+  version "1.0.0"
+  resolved "file:packages/examples/panic"
 
 parent-module@^1.0.0:
   version "1.0.1"

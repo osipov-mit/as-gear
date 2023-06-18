@@ -1,4 +1,5 @@
 import { AL_MASK, OBJECT, OBJECT_OVERHEAD, BLOCK_MAXSIZE, BLOCK_OVERHEAD, BLOCK, OBJECT_MAXSIZE } from "./common";
+import { panic } from '../core/utils'
 
 // @ts-ignore: decorator
 @lazy
@@ -136,4 +137,9 @@ function __visit(ptr: usize, cookie: u32): void { // eslint-disable-line @typesc
 @global @unsafe
 export function __collect(): void {
   // __visit_globals(8)
+}
+
+export function panicHandler(msg: string, file: string, line: i32, column: i32): void {
+  const buf = Uint8Array.wrap(String.UTF8.encode(msg));
+  panic(buf);
 }

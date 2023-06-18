@@ -1,0 +1,19 @@
+{
+  "name": "panic",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "asbuild:debug": "asc assembly/index.ts --target debug --transform ../../../node_modules/as-gear-transformer/dist/transformer.js",
+    "asbuild:release": "asc assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:debug && npm run asbuild:release",
+    "test": "node tests",
+    "start": "npx serve ."
+  },
+  "devDependencies": {
+    "assemblyscript": "0.27.5",
+    "as-scale-codec": "*",
+    "as-gear-core": "*"
+  }
+}

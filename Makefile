@@ -16,26 +16,30 @@ struct:
 build_struct: build_transformer struct
 
 build_ping:
-	@npx lerna run --scope ping asbuild:release
-	@./wasm-proc --skip-stack-end build/ping.wasm
+	@npx lerna run --scope ping asbuild:debug
+	@./wasm-proc --assembly-script build/ping.debug.wasm
 	@rm -f build/ping*.meta.wasm
 	@ls -l build/ping*.wasm
 
+
 build_sum:
 	@npx lerna run --scope sum asbuild:debug
-	@./wasm-proc build/sum.debug.wasm --skip-stack-end
+	@./wasm-proc --assembly-script build/sum.debug.wasm
 	@rm -f build/sum*.meta.wasm
 	@ls -l build/sum*.wasm
 
-build_examples: build_ping build_sum
+panic:
+	@npx lerna run --scope panic asbuild:debug
+	@./wasm-proc --assembly-script build/panic.debug.wasm
+	@rm -f build/panic*.meta.wasm
+	@ls -l build/panic*.wasm
+
+build_panic: build_transformer panic
+
+build_examples: build_transformer build_ping build_sum build_enum build_struct build_panic
 
 build_transformer:
 	@npx lerna run --scope as-gear-transformer build
-
-run_sum_workflow:
-	@gear-js workflow ./sum.yaml
-
-test: build_sum run_sum_workflow
 
 clear:
 	@rm -rfv build

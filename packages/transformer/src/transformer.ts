@@ -89,26 +89,24 @@ class MyTransform extends Transform {
       }
     }
 
-    if (!metadata) {
-      metadata = { types: typeInfo };
-    } else {
+    if (metadata) {
       metadata.types = typeInfo;
+
+      const jsonMetadata = JSON.stringify(metadata);
+
+      const encMetadata = new TextEncoder().encode(jsonMetadata);
+
+      const u8a = new Uint8Array(lang.byteLength + encMetadata.byteLength);
+      // Set the first byte to the language identifier
+      u8a.set(lang, 0);
+      u8a.set(encMetadata, 1);
+
+      const metahash = blake2b(u8a, undefined, 32);
+      const metahashFunc = generateMetahashFunc(metahash, entryFile!);
+      entryFile?.members?.set('metahash', metahashFunc);
+      entryFile?.exports?.set('metahash', metahashFunc);
+      this.writeFile('meta.txt', u8aToHex(u8a), '.');
     }
-
-    const jsonMetadata = JSON.stringify(metadata);
-
-    const encMetadata = new TextEncoder().encode(jsonMetadata);
-
-    const u8a = new Uint8Array(lang.byteLength + encMetadata.byteLength);
-    // Set the first byte to the language identifier
-    u8a.set(lang, 0);
-    u8a.set(encMetadata, 1);
-
-    const metahash = blake2b(u8a, undefined, 32);
-    const metahashFunc = generateMetahashFunc(metahash, entryFile!);
-    entryFile?.members?.set('metahash', metahashFunc);
-    entryFile?.exports?.set('metahash', metahashFunc);
-    this.writeFile('meta.txt', u8aToHex(u8a), '.');
   }
 
   afterCompile(module: Module): void | Promise<void> {

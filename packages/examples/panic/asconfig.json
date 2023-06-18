@@ -1,0 +1,26 @@
+{
+  "targets": {
+    "debug": {
+      "outFile": "../../../build/panic.debug.wasm",
+      "textFile": "../../../build/panic.debug.wat",
+      "debug": true
+    },
+    "release": {
+      "outFile": "../../../build/panic.wasm",
+      "textFile": "../../../build/panic.wat",
+      "optimizeLevel": 3,
+      "shrinkLevel": 0
+    }
+  },
+  "options": {
+    "importMemory": true,
+    "noExportMemory": true,
+    "runtime": "../../../node_modules/as-gear-core/assembly/runtime/gear",
+    "exportStart": "nostart",
+    "converge": false,
+    "exportRuntime": true,
+    "disable": ["bulk-memory"],
+    "use": ["abort=../../../node_modules/as-gear-core/assembly/runtime/gear/panicHandler"],
+    "noAssert": true
+  }
+}
