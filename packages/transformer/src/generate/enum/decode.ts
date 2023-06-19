@@ -70,6 +70,10 @@ export function generateDecodeEnumFunc(f: File, elem: ClassPrototype) {
     ]),
   );
 
+  statements.push(
+    gen.varStatement([gen.varDecl(gen.identExp('bytesLen'), CommonFlags.Let, gen.intLiteralExp(i64_one))]),
+  );
+
   const cases: SwitchCase[] = [];
 
   for (const name of variantsEnum) {
@@ -128,6 +132,24 @@ export function generateDecodeEnumFunc(f: File, elem: ClassPrototype) {
           ),
         ),
       );
+      scStatements.push(
+        gen.expStatement(
+          gen.binaryExp(
+            Token.Plus_Equals,
+            gen.identExp('bytesLen'),
+            gen.propAccessExp(
+              gen.assertExp(
+                AssertionKind.NonNull,
+                gen.propAccessExp(
+                  gen.assertExp(AssertionKind.NonNull, gen.propAccessExp(gen.thisExp(), gen.identExp('variants'))),
+                  gen.identExp(name),
+                ),
+              ),
+              gen.identExp('bytesLen'),
+            ),
+          ),
+        ),
+      );
     }
 
     scStatements.push(gen.breakStatement());
@@ -147,6 +169,16 @@ export function generateDecodeEnumFunc(f: File, elem: ClassPrototype) {
 
   statements.push(gen.switchStatement(gen.identExp('index'), cases));
 
+  statements.push(
+    gen.expStatement(
+      gen.binaryExp(
+        Token.Equals,
+        gen.propAccessExp(gen.thisExp(), gen.identExp('_bytesLen')),
+        gen.identExp('bytesLen'),
+      ),
+    ),
+  );
+
   const block = gen.blockStatement(statements);
   const signature = gen.funcType(
     [gen.param(ParameterKind.Default, gen.identExp('value'), gen.namedType(gen.typeName(gen.identExp('Uint8Array'))))],
@@ -156,6 +188,5 @@ export function generateDecodeEnumFunc(f: File, elem: ClassPrototype) {
   const declaration = gen.methodDecl(gen.identExp('decode'), CommonFlags.Instance, signature, block);
   const method = gen.funcPrototype('decode', elem, declaration);
   (<ClassDeclaration>elem.declaration).members.push(declaration);
-
   return method;
 }

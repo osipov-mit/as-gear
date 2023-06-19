@@ -38,15 +38,17 @@ export class Vec<T extends Codec> extends Array<T> implements Codec {
   }
 
   decode(value: Uint8Array): void {
-    this._bytesLen = value.length;
     const len = CompactInt.decode(value);
     value = value.slice(len.bytesLen);
+    let bytesLen = len.bytesLen;
     for (let i = <u64>0; i < len.value; i++) {
       const instance = instantiate<T>();
       instance.decode(value);
       this.push(instance);
+      bytesLen += instance.bytesLen;
       value = value.slice(instance.bytesLen);
     }
+    this._bytesLen = bytesLen;
   }
 
   get bytesLen(): u32 {

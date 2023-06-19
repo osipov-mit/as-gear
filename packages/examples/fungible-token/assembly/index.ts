@@ -56,16 +56,20 @@ class FungibleToken extends CodecClass {
     if (from == ZERO_ID || to == ZERO_ID) {
       throw new Error('Zero addresses');
     }
-    const actor = new ActorId(msg.source());
+
     if (!this.canTransfer(from, amount)) {
       throw new Error('Not allowed to transfer');
     }
-    const balance = this.balances!.get(from) || U64.from(0);
-    if (balance < amount) {
-      throw new Error('Amount exceeds account balance');
-    }
+    const balance = this.balances!.get(from);
+    debug(`balance: ${balance}`);
     this.balances!.set(from, balance.sub(amount));
-    this.balances!.set(to, (this.balances!.get(to) || U64.from(0)).add(amount));
+    let toBalance: U64;
+    if (!this.balances!.has(to)) {
+      toBalance = U64.from(0);
+    } else {
+      toBalance = this.balances!.get(to);
+    }
+    this.balances!.set(to, toBalance.add(amount));
     msg.reply(FTEvent.Transfer(new FTActionTransfer(from, to, amount)).encode());
   }
 
@@ -84,6 +88,15 @@ class FungibleToken extends CodecClass {
   }
 
   canTransfer(from: ActorId, amount: U64): boolean {
+    debug(`from: ${from.toString()}`);
+    debug(`msg.source(): ${msg.source().toString()}`);
+    this.balances!.keys().forEach((k) => {
+      debug(`${k.toString()}`);
+    });
+    debug(`size: ${this.balances!.size}`);
+    debug(`from == new ActorId(msg.source()): ${from == new ActorId(msg.source())}`);
+    debug(`this.balances!.has(from): ${this.balances!.has(from)}`);
+    debug(`this.balances!.get(from) > amount: ${this.balances!.get(from) > amount}`);
     if (from == new ActorId(msg.source()) && this.balances!.has(from) && this.balances!.get(from) > amount) {
       return true;
     }

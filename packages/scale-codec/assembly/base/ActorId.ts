@@ -19,7 +19,8 @@ export class ActorId extends CodecClass implements Codec {
   }
 
   decode(value: Uint8Array): void {
-    this._value = value;
+    this._value = value.slice(0, 32);
+    this._bytesLen = 32;
   }
 
   toString(): string {
@@ -32,12 +33,13 @@ export class ActorId extends CodecClass implements Codec {
     if (this._value.length != other.value.length) {
       return false;
     }
-    for (let i = 0; i < this._value.length; i++) {
-      if (this._value[i] != other.value[i]) {
-        return false;
-      }
-    }
-    return true;
+    return this._value.toString() == other.value.toString();
+    // for (let i = 0; i < this._value.length; i++) {
+    //   if (this._value[i] != other.value[i]) {
+    //     return false;
+    //   }
+    // }
+    // return true;
   }
 
   @inline

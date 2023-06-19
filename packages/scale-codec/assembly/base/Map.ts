@@ -54,7 +54,6 @@ export class ScaleMap<V extends Codec> extends Map<string, V> implements Codec {
 
   decode(bytes: Uint8Array): void {
     this.clear();
-    this._bytesLen = bytes.length;
     const mapLen = CompactInt.decode(bytes);
     let offset = <u32>mapLen.bytesLen;
     for (let i = 0; i < <i32>mapLen.value; i++) {
@@ -65,6 +64,7 @@ export class ScaleMap<V extends Codec> extends Map<string, V> implements Codec {
       offset += value.bytesLen;
       this.set(key.value, value);
     }
+    this._bytesLen = offset;
   }
 
   static decode<V extends Codec>(bytes: Uint8Array): ScaleMap<V> {
