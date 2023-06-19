@@ -1,5 +1,7 @@
-import { ActorId, CodecClass, Option, ScaleString, U64, U8 } from 'as-scale-codec/assembly';
+import { CodecClass, Option, ScaleString, U64, U8 } from 'as-scale-codec/assembly';
 import { debug, msg } from 'as-gear-core/assembly';
+import { ActorId } from 'as-gear-std/assembly';
+
 import { FTAction, FTActionTransfer, FTActionVariants, FTEvent, InitConfig } from './io';
 
 const ZERO_ID = new ActorId();

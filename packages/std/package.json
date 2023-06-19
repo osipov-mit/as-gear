@@ -1,5 +1,5 @@
 {
-  "name": "as-gear-std",
+  "name": "as-gstd",
   "version": "1.0.0",
   "description": "",
   "main": "./assembly/index.ts",

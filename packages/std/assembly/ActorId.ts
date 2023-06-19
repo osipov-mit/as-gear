@@ -1,4 +1,4 @@
-import { Codec, CodecClass } from './Codec';
+import { Codec, CodecClass } from 'as-scale-codec/assembly';
 
 export class ActorId extends CodecClass implements Codec {
   private _value: Uint8Array;
