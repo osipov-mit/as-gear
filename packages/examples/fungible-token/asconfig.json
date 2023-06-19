@@ -1,0 +1,28 @@
+{
+  "targets": {
+    "debug": {
+      "outFile": "../../../build/ft.debug.wasm",
+      "textFile": "../../../build/ft.debug.wat",
+      "debug": true
+    },
+    "release": {
+      "outFile": "../../../build/ft.wasm",
+      "textFile": "../../../build/ft.wat",
+      "optimizeLevel": 3,
+      "shrinkLevel": 0
+    }
+  },
+  "options": {
+    "importMemory": true,
+    "noExportMemory": true,
+    "runtime": "../../../node_modules/as-gear-core/assembly/runtime/gear",
+    "exportStart": "_start",
+    "converge": false,
+    "exportRuntime": true,
+    "disable": ["bulk-memory"],
+    "use": ["abort=../../../node_modules/as-gear-core/assembly/runtime/gear/panicHandler"],
+    "stackSize": 1048576,
+    "noAssert": true,
+    "memoryBase": 8
+  }
+}

@@ -3,7 +3,7 @@ import { encodeNumber, decodeNumber } from '../../utils';
 import { Codec, CodecClass } from '../Codec';
 
 export class BaseInt<T extends number> extends CodecClass implements Codec {
-  private _value: T;
+  protected _value: T;
 
   constructor(value: T = <T>0) {
     super();
@@ -28,23 +28,5 @@ export class BaseInt<T extends number> extends CodecClass implements Codec {
 
   toString(): string {
     return this.value.toString();
-  }
-
-  @inline
-  @operator('==')
-  eq(other: BaseInt<T>): bool {
-    return this.value == other.value;
-  }
-
-  @inline
-  @operator('!=')
-  notEq(other: BaseInt<T>): bool {
-    return this.value != other.value;
-  }
-
-  @inline
-  @operator('+')
-  add(other: BaseInt<T>): BaseInt<T> {
-    return new BaseInt<T>(<T>(this._value + other.value));
   }
 }

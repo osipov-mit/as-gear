@@ -20,7 +20,8 @@ import { generateEnumTypeInfo, generateStructTypeInfo } from './typeinfo.js';
 import { generateMetadata, generateMetahashFunc } from './metadata.js';
 import { Module } from 'types:assemblyscript/src/module';
 
-const lang = new Uint8Array([0x01]);
+const LANG = new Uint8Array([0x01]);
+const IMPL_VERSION = new Uint8Array([0x00, 0x01]);
 
 class MyTransform extends Transform {
   afterInitialize(program: Program) {
@@ -96,10 +97,11 @@ class MyTransform extends Transform {
 
       const encMetadata = new TextEncoder().encode(jsonMetadata);
 
-      const u8a = new Uint8Array(lang.byteLength + encMetadata.byteLength);
+      const u8a = new Uint8Array(LANG.byteLength + IMPL_VERSION.byteLength + encMetadata.byteLength);
       // Set the first byte to the language identifier
-      u8a.set(lang, 0);
-      u8a.set(encMetadata, 1);
+      u8a.set(LANG, 0);
+      u8a.set(IMPL_VERSION, 1);
+      u8a.set(encMetadata, 3);
 
       const metahash = blake2b(u8a, undefined, 32);
       const metahashFunc = generateMetahashFunc(metahash, entryFile!);

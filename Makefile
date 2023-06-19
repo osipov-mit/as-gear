@@ -1,3 +1,9 @@
+ft: build_transformer
+	@npx lerna run --scope fungible-token asbuild:debug
+	@./wasm-proc --assembly-script build/ft.debug.wasm
+	@rm -f build/ft*.meta.wasm
+	@ls -l build/ft*.wasm
+
 enum:
 	@npx lerna run --scope enum asbuild:debug
 	@./wasm-proc --assembly-script build/enum.debug.wasm
@@ -20,6 +26,7 @@ build_ping:
 	@./wasm-proc --assembly-script build/ping.debug.wasm
 	@rm -f build/ping*.meta.wasm
 	@ls -l build/ping*.wasm
+
 
 
 build_sum:

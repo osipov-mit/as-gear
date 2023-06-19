@@ -3,7 +3,7 @@ import { Codec, CodecClass } from './Codec';
 export class ActorId extends CodecClass implements Codec {
   private _value: Uint8Array;
 
-  constructor(value: Uint8Array = new Uint8Array(32)) {
+  constructor(value: Uint8Array = new Uint8Array(32).fill(0)) {
     super();
     this._value = value;
     assert(this._value.length == 32, 'ActorId length must be 32 bytes');

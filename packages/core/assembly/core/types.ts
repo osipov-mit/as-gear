@@ -1,5 +1,5 @@
 export class ActorId extends Uint8Array {
-  constructor(value: Uint8Array | null = null) {
+  constructor(value: Uint8Array = new Uint8Array(32).fill(0)) {
     super(32);
     if (value) {
       assert(value.length == 32, 'ActorId: Invalid length');

@@ -17,7 +17,7 @@ export function generateMetadata(elem: ClassPrototype) {
     return null;
   }
 
-  const result: Record<string, { in: string; out: string } | string> = {};
+  const result: Record<string, { input: string; output: string } | string> = {};
 
   for (const [name, def] of Array.from(members.entries())) {
     if (def.kind !== ElementKind.PropertyPrototype) {
@@ -32,8 +32,8 @@ export function generateMetadata(elem: ClassPrototype) {
         'Invalid type name for metadata field.\nExpected: InOut.\nActual: ' + type.name.identifier.text,
       );
       result[name] = {
-        in: getTypeName(<NamedTypeNode>type.typeArguments![0]),
-        out: getTypeName(<NamedTypeNode>type.typeArguments![1]),
+        input: getTypeName(<NamedTypeNode>type.typeArguments![0]),
+        output: getTypeName(<NamedTypeNode>type.typeArguments![1]),
       };
     } else if (['signal', 'state'].includes(name)) {
       result[name] = getTypeName(type);
