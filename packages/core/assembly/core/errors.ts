@@ -1,16 +1,13 @@
-import { gsys } from '../sys';
-
 export class SyscallError {
-  len: u32;
+  code: u32;
 
   constructor(v: u32) {
-    this.len = v;
+    this.code = v;
   }
 
-  //TODO: decode error
-  getErr(): Uint8Array {
-    const buf = new Uint8Array(this.len);
-    gsys.gr_error(<i32>buf.dataStart, this.len);
-    return buf;
+  assert(): void {
+    if (this.code != 0) {
+      throw new Error();
+    }
   }
 }

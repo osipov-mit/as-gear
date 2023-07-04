@@ -1,9 +1,18 @@
 import { u128 } from 'as-bignum/assembly';
 
-import { BlockNumberWithHash, Hash, Length, LengthWithGas, LengthWithHash, gsys } from '../sys';
+import {
+  BlockNumberWithHash,
+  Hash,
+  ErrorWithGas,
+  ErrorWithHash,
+  gsys,
+  ErrorCode,
+  HashWithValue,
+  ErrorWithBlockNumberAndValue,
+} from '../sys';
 import { u128ToPtr } from '../util';
-import { getError, panic } from './utils';
 import { ActorId, MessageId, ReservationId } from './types';
+import { SyscallError } from './errors';
 
 export function blockHeight(): u32 {
   const bn = new Uint8Array(sizeof<u32>()).fill(0);
@@ -19,45 +28,46 @@ export function blockTimestamp(): u64 {
   return load<u64>(timestamp.dataStart);
 }
 
-export function exit(inheritor_id: ActorId): void {
-  gsys.gr_exit(<i32>inheritor_id.value.dataStart);
+export function replyDeposit(messageId: MessageId, amount: u64): void {
+  const errorCodeU8a = new Uint8Array(sizeof<ErrorCode>());
+
+  gsys.gr_reply_deposit(messageId.dataStart, amount, errorCodeU8a.dataStart);
+
+  const errorCode = load<u32>(errorCodeU8a.dataStart);
+
+  new SyscallError(errorCode).assert();
 }
 
-export function reserveGas(amount: u64, duration: u32): ReservationId | null {
-  const res: LengthWithHash = LengthWithHash.default();
+export function exit(inheritor_id: ActorId): void {
+  gsys.gr_exit(<i32>inheritor_id.dataStart);
+}
+
+export function reserveGas(amount: u64, duration: u32): ReservationId {
+  const res = ErrorWithHash.default();
 
   gsys.gr_reserve_gas(amount, duration, res.ptr);
 
-  if (res.length) {
-    panic(getError(res.length));
-    return null;
-  }
+  new SyscallError(res.errorCode).assert();
 
   return res.hash;
 }
 
-export function systemReserveGas(amount: u64): void | null {
-  const len = new Uint8Array(sizeof<Length>()).fill(0);
+export function systemReserveGas(amount: u64): void {
+  const errorCodeU8a = new Uint8Array(sizeof<ErrorCode>());
 
-  gsys.gr_system_reserve_gas(amount, <i32>len.dataStart);
+  gsys.gr_system_reserve_gas(amount, <i32>errorCodeU8a.dataStart);
 
-  const length = load<u32>(len.dataStart);
+  const errorCode = load<u32>(errorCodeU8a.dataStart);
 
-  if (length != 0) {
-    panic(getError(length));
-    return null;
-  }
+  new SyscallError(errorCode).assert();
 }
 
-export function unreserveGas(id: ReservationId): u64 | null {
-  const res: LengthWithGas = LengthWithGas.default();
+export function unreserveGas(id: ReservationId): u64 {
+  const res = ErrorWithGas.default();
 
   gsys.gr_unreserve_gas(<i32>id.dataStart, res.ptr);
 
-  if (res.length != 0) {
-    panic(getError(res.length));
-    return null;
-  }
+  new SyscallError(res.errorCode).assert();
 
   return res.gas;
 }
@@ -93,35 +103,44 @@ export function waitUpTo(duration: u32): void {
   gsys.gr_wait_up_to(duration);
 }
 
-export function wake(messageId: MessageId): void | null {
+export function wake(messageId: MessageId): void {
   return wakeDelayed(messageId, 0);
 }
 
-export function wakeDelayed(messageId: MessageId, delay: u32): void | null {
-  const lenBuf = new Uint8Array(sizeof<u32>()).fill(0);
+export function wakeDelayed(messageId: MessageId, delay: u32): void {
+  let errorCodeU8a = new Uint8Array(sizeof<u32>()).fill(0);
 
-  gsys.gr_wake(<i32>messageId.dataStart, delay, <i32>lenBuf.dataStart);
-  const len = load<u32>(lenBuf.dataStart);
-  if (len != 0) {
-    panic(getError(len));
-    return null;
-  }
+  gsys.gr_wake(<i32>messageId.dataStart, delay, <i32>errorCodeU8a.dataStart);
+  const errorCode = load<u32>(errorCodeU8a.dataStart);
+  new SyscallError(errorCode).assert();
 }
 
 export function programId(): ActorId {
-  const program_id = new Uint8Array(32).fill(0);
+  let program_id = new Uint8Array(32).fill(0);
   gsys.gr_program_id(<i32>program_id.dataStart);
   return new ActorId(program_id);
 }
 
 export function origin(): ActorId {
-  const origin = new Uint8Array(32).fill(0);
-  gsys.gr_origin(<i32>origin.dataStart);
-  return new ActorId(origin);
+  let programId = ActorId.default();
+  gsys.gr_program_id(<i32>programId.dataStart);
+  return programId;
 }
 
-export function random(subject: Hash): BlockNumberWithHash | null {
-  const res: BlockNumberWithHash = BlockNumberWithHash.default();
+export function payProgramRent(programId: ActorId, value: u128): [u128, u32] {
+  const rentPid = new HashWithValue(programId, value);
+
+  let res = ErrorWithBlockNumberAndValue.default();
+
+  gsys.gr_pay_program_rent(rentPid.ptr, res.ptr);
+
+  new SyscallError(res.errorCode).assert();
+
+  return [res.value, res.bn];
+}
+
+export function random(subject: Hash): BlockNumberWithHash {
+  let res: BlockNumberWithHash = BlockNumberWithHash.default();
 
   gsys.gr_random(<i32>subject.dataStart, res.ptr);
 

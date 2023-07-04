@@ -1,4 +1,4 @@
-import { CodecClass, Option, Result, ScaleString, U32, U8 } from 'as-scale-codec/assembly';
+import { CodecClass, Result, ScaleString, U8 } from 'as-scale-codec/assembly';
 import { InOut, MetadataRepr } from 'as-gear-std/assembly';
 
 //@ts-ignore
