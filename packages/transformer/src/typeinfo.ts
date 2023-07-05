@@ -7,8 +7,11 @@ import {
   ClassPrototype,
   MethodDeclaration,
   File,
-  TypeName,
+  IdentifierExpression,
+  IntegerLiteralExpression,
 } from 'assemblyscript/dist/assemblyscript.js';
+import assert from 'assert';
+
 import { getTypeName } from './utils.js';
 
 export function generateStructTypeInfo(elem: ClassPrototype) {
@@ -70,4 +73,17 @@ export function generateEnumTypeInfo(f: File, elem: ClassPrototype) {
     }
   }
   return { name: elem.name, def: result };
+}
+
+export function generateFixedSizeArrayTypeInfo(f: File, elem: ClassPrototype) {
+  const decorator = elem.declaration.decorators?.find((node) => (<any>node.name).text === 'FixedSizeArray');
+
+  assert.strictEqual(decorator?.args?.length, 2, 'Transformer: Invalid args of FixedSizeArray decorator');
+  const type = (<IdentifierExpression>decorator.args[0]).text;
+  assert.notStrictEqual(type, undefined, 'Transformer: Invalid type name in FixedSizeArray decorator');
+  const size = (<IntegerLiteralExpression>decorator.args[1]).value;
+  assert.notStrictEqual(size, undefined, 'Transformer: Invalid size in FixedSizeArray decorator');
+  const def = `[${type};${i64_to_string(size)}]`;
+
+  return { name: elem.name, def };
 }

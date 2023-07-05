@@ -16,7 +16,7 @@ import {
   generateEncodeStructFunc,
   generateDecodeStructFunc,
 } from './generate/index.js';
-import { generateEnumTypeInfo, generateStructTypeInfo } from './typeinfo.js';
+import { generateEnumTypeInfo, generateFixedSizeArrayTypeInfo, generateStructTypeInfo } from './typeinfo.js';
 import { generateMetadata, generateMetahashFunc } from './metadata.js';
 import { Module } from 'types:assemblyscript/src/module';
 
@@ -25,9 +25,10 @@ const IMPL_VERSION = new Uint8Array([0x00, 0x01]);
 
 class MyTransform extends Transform {
   afterInitialize(program: Program) {
-    const userFiles = Array.from(program.filesByName.values()).filter(
-      (file) => isUserEntryFile(file.source) || isUserFile(file.source),
-    );
+    const userFiles = Array.from(program.filesByName.values());
+    // .filter(
+    //   (file) => isUserEntryFile(file.source) || isUserFile(file.source),
+    // );
 
     const typeInfo: Record<string, any> = {};
     let metadata: Record<string, any> | null = null;
@@ -82,6 +83,13 @@ class MyTransform extends Transform {
             if (type) {
               typeInfo[type.name] = type.def;
             }
+          } else if (hasDecorator('FixedSizeArray', elem)) {
+            if (elem.kind === ElementKind.ClassPrototype && f.name === elem.parent.name) {
+              const type = generateFixedSizeArrayTypeInfo(file, <ClassPrototype>elem);
+              if (type) {
+                typeInfo[type.name] = type.def;
+              }
+            }
           }
         }
         if (hasDecorator('metadata', elem)) {
@@ -92,7 +100,6 @@ class MyTransform extends Transform {
 
     if (metadata) {
       metadata.types = typeInfo;
-
       const jsonMetadata = JSON.stringify(metadata);
 
       const encMetadata = new TextEncoder().encode(jsonMetadata);

@@ -1,39 +1,42 @@
-import { Codec, CodecClass } from 'as-scale-codec/assembly';
+import { Codec } from 'as-scale-codec/assembly';
 
-export class ActorId extends CodecClass implements Codec {
-  private _value: Uint8Array;
+// @ts-ignore: decorator
+@typeInfo
+// @ts-ignore: decorator
+@FixedSizeArray(u8, 32)
+export class ActorId extends Uint8Array implements Codec {
+  bytesLen: i32;
 
   constructor(value: Uint8Array = new Uint8Array(32).fill(0)) {
-    super();
-    this._value = value;
-    assert(this._value.length == 32, 'ActorId length must be 32 bytes');
-    this._bytesLen = 32;
+    assert(value.length == 32, 'ActorId: Length must be 32 bytes');
+    super(32);
+    this.set(value);
+    this.bytesLen = 32;
   }
 
-  get value(): Uint8Array {
-    return this._value;
+  toHex(): string {
+    throw new Error('Method not implemented.');
   }
 
   encode(): Uint8Array {
-    return this._value;
+    return this;
   }
 
   decode(value: Uint8Array): void {
-    this._value = value.slice(0, 32);
-    this._bytesLen = 32;
+    this.set(value.slice(0, 32));
   }
 
   toString(): string {
-    return this._value.toString();
+    return this.toString();
   }
 
   @inline
   @operator('==')
   eq(other: ActorId): boolean {
-    if (this._value.length != other.value.length) {
+    if (this.length != other.length) {
       return false;
     }
-    return this._value.toString() == other.value.toString();
+    return this.toString() == other.toString();
     // for (let i = 0; i < this._value.length; i++) {
     //   if (this._value[i] != other.value[i]) {
     //     return false;
@@ -45,11 +48,11 @@ export class ActorId extends CodecClass implements Codec {
   @inline
   @operator('!=')
   notEq(other: ActorId): boolean {
-    if (this._value.length != other.value.length) {
+    if (this.length != other.length) {
       return true;
     }
-    for (let i = 0; i < this._value.length; i++) {
-      if (this._value[i] != other.value[i]) {
+    for (let i = 0; i < this.length; i++) {
+      if (this[i] != other[i]) {
         return true;
       }
     }

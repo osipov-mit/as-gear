@@ -14,5 +14,8 @@
   "dependencies": {
     "assert": "^2.0.0",
     "blakejs": "^1.2.1"
+  },
+  "devDependencies": {
+    "@types/assert": "^1.5.6"
   }
 }
