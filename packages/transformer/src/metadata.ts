@@ -76,6 +76,7 @@ export function generateMetahashFunc(metahash: Uint8Array, parent: File) {
       gen.callExp(gen.propAccessExp(gen.identExp('msg'), gen.identExp('reply')), null, [gen.identExp('metahash')]),
     ),
   );
+
   const func = gen.funcPrototype(
     'metahash',
     parent,

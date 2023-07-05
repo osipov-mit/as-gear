@@ -1,3 +1,5 @@
+import { BlockNumber, Value } from '../sys';
+
 export class ActorId extends Uint8Array {
   constructor(value: Uint8Array) {
     super(32);
@@ -54,12 +56,22 @@ export class ReservationId extends Uint8Array {
   }
 }
 
-export class MessageAndActorIds {
+export class MessageIdWithActorId {
   messageId: MessageId;
   actorId: ActorId;
 
   constructor(m: Uint8Array, a: Uint8Array) {
     this.messageId = new MessageId(m);
     this.actorId = new ActorId(a);
+  }
+}
+
+export class ValueWithBlockNumber {
+  value: Value;
+  bn: BlockNumber;
+
+  constructor(value: Value, bn: BlockNumber) {
+    this.value = value;
+    this.bn = bn;
   }
 }

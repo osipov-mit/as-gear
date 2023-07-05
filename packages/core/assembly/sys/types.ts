@@ -7,8 +7,8 @@ export class U8a32 extends Uint8Array {
     super(length)
   }
 
-  static default(): U8a32{
-    return new U8a32(32).fill(0)
+  static default(): U8a32 {
+    return new U8a32(32).fill(0) as U8a32
   }
 }
 
@@ -259,7 +259,7 @@ export class ErrorWithHash {
   }
 
   get hash(): Hash {
-    return this.buf.slice(SIZE_OF_ERROR_CODE);
+    return this.buf.slice(SIZE_OF_ERROR_CODE) as U8a32;
   }
 
   static default(): ErrorWithHash {

@@ -1,37 +1,41 @@
 import { u128 } from 'as-bignum/assembly';
-import { gsys, Hash, HashWithValue, LengthWithTwoHashes } from '../sys';
-import { getError, panic } from './utils';
-import { CodeId, MessageAndActorIds } from './types';
+import { ErrorWithTwoHashes, gsys, Hash, HashWithValue } from '../sys';
+import { panic } from './utils';
+import { CodeId, MessageIdWithActorId } from './types';
+import { SyscallError } from './errors';
 
+/** Create a new program and returns its address. */
 export function createProgram(
   codeId: CodeId,
   salt: Uint8Array,
   payload: Uint8Array,
   value: u128,
-): MessageAndActorIds | null {
+): MessageIdWithActorId {
   return createProgramDelayed(codeId, salt, payload, value, 0);
 }
 
+/** Same as `create_program`, but with an explicit gas limit. */
 export function createProgramWithGas(
   codeId: CodeId,
   salt: Uint8Array,
   payload: Uint8Array,
   gas_limit: u64,
   value: u128,
-): MessageAndActorIds | null {
+): MessageIdWithActorId {
   return createProgramWithGasDelayed(codeId, salt, payload, gas_limit, value, 0);
 }
 
+/** Same as `create_program`, but creates a new program after the `delay` expressed in block count. */
 export function createProgramDelayed(
   codeId: Hash,
   salt: Uint8Array,
   payload: Uint8Array,
   value: u128,
   delay: u32,
-): MessageAndActorIds | null {
+): MessageIdWithActorId {
   let cidValue = new HashWithValue(codeId, value);
 
-  const res: LengthWithTwoHashes = LengthWithTwoHashes.default();
+  const res = ErrorWithTwoHashes.default();
 
   gsys.gr_create_program(
     cidValue.ptr,
@@ -43,14 +47,12 @@ export function createProgramDelayed(
     res.ptr,
   );
 
-  if (res.length) {
-    panic(getError(res.length));
-    return null;
-  }
+  new SyscallError(res.errorCode).assert();
 
-  return new MessageAndActorIds(res.hash1, res.hash2);
+  return new MessageIdWithActorId(res.hash1, res.hash2);
 }
 
+/** Same as `create_program_with_gas`, but creates a new program after the `delay` expressed in block count. */
 export function createProgramWithGasDelayed(
   codeId: CodeId,
   salt: Uint8Array,
@@ -58,10 +60,10 @@ export function createProgramWithGasDelayed(
   gas_limit: u64,
   value: u128,
   delay: u32,
-): MessageAndActorIds | null {
+): MessageIdWithActorId {
   let cidValue = new HashWithValue(codeId, value);
 
-  const res: LengthWithTwoHashes = LengthWithTwoHashes.default();
+  const res = ErrorWithTwoHashes.default();
 
   gsys.gr_create_program_wgas(
     cidValue.ptr,
@@ -73,10 +75,8 @@ export function createProgramWithGasDelayed(
     delay,
     res.ptr,
   );
-  if (res.length) {
-    panic(getError(res.length));
-    return null;
-  }
 
-  return new MessageAndActorIds(res.hash1, res.hash2);
+  new SyscallError(res.errorCode).assert();
+
+  return new MessageIdWithActorId(res.hash1, res.hash2);
 }

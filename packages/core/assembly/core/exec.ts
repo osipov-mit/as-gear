@@ -11,7 +11,7 @@ import {
   ErrorWithBlockNumberAndValue,
 } from '../sys';
 import { u128ToPtr } from '../util';
-import { ActorId, MessageId, ReservationId } from './types';
+import { ActorId, MessageId, ReservationId, ValueWithBlockNumber } from './types';
 import { SyscallError } from './errors';
 
 export function blockHeight(): u32 {
@@ -127,7 +127,7 @@ export function origin(): ActorId {
   return programId;
 }
 
-export function payProgramRent(programId: ActorId, value: u128): [u128, u32] {
+export function payProgramRent(programId: ActorId, value: u128): ValueWithBlockNumber {
   const rentPid = new HashWithValue(programId, value);
 
   let res = ErrorWithBlockNumberAndValue.default();
@@ -136,7 +136,7 @@ export function payProgramRent(programId: ActorId, value: u128): [u128, u32] {
 
   new SyscallError(res.errorCode).assert();
 
-  return [res.value, res.bn];
+  return new ValueWithBlockNumber(res.value, res.bn);
 }
 
 export function random(subject: Hash): BlockNumberWithHash {
