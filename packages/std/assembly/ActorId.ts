@@ -26,23 +26,18 @@ export class ActorId extends Uint8Array implements Codec {
     this.set(value.slice(0, 32));
   }
 
-  toString(): string {
-    return this.toString();
-  }
-
   @inline
   @operator('==')
   eq(other: ActorId): boolean {
     if (this.length != other.length) {
       return false;
     }
-    return this.toString() == other.toString();
-    // for (let i = 0; i < this._value.length; i++) {
-    //   if (this._value[i] != other.value[i]) {
-    //     return false;
-    //   }
-    // }
-    // return true;
+    for (let i = 0; i < this.length; i++) {
+      if (this[i] != other[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @inline

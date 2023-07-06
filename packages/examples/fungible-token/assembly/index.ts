@@ -1,25 +1,25 @@
 import { CodecClass, Option, ScaleString, U64, U8 } from 'as-scale-codec/assembly';
-import { debug, msg } from 'as-gear-core/assembly';
+import { msg } from 'as-gear-core/assembly';
 import { ActorId } from 'as-gear-std/assembly';
 
 import { FTAction, FTActionTransfer, FTActionVariants, FTEvent, InitConfig } from './io';
 
-const ZERO_ID = new ActorId();
+const ZERO_ID = new ActorId(new Uint8Array(32).fill(0));
 
 class FungibleToken extends CodecClass {
   name: ScaleString | null;
   symbol: ScaleString | null;
   totalSupply: U64 | null;
-  balances: Map<ActorId, U64> | null;
-  allowances: Map<ActorId, Map<ActorId, U64>> | null;
+  balances: Map<string, U64> | null;
+  allowances: Map<string, Map<string, U64>> | null;
   decimals: U8 | null;
 
   constructor(
     name: ScaleString | null = null,
     symbol: ScaleString | null = null,
     totalSupply: U64 | null = null,
-    balances: Map<ActorId, U64> | null = null,
-    allowances: Map<ActorId, Map<ActorId, U64>> | null = null,
+    balances: Map<string, U64> | null = null,
+    allowances: Map<string, Map<string, U64>> | null = null,
     decimals: U8 | null = null,
   ) {
     super();
@@ -33,79 +33,84 @@ class FungibleToken extends CodecClass {
 
   mint(amount: U64): void {
     const actor = new ActorId(msg.source());
-    if (this.balances!.has(actor)) {
-      this.balances!.set(actor, this.balances!.get(actor).add(amount));
+    const key = actor.toString();
+
+    if (this.balances!.has(key)) {
+      this.balances!.set(key, this.balances!.get(key).add(amount));
     } else {
-      this.balances!.set(actor, amount);
+      this.balances!.set(key, amount);
     }
     this.totalSupply = this.totalSupply!.add(amount);
+
     msg.reply(FTEvent.Transfer(new FTActionTransfer(ZERO_ID, actor, amount)).encode());
   }
 
   burn(amount: U64): void {
     const actor = new ActorId(msg.source());
-    const balance = this.balances!.get(actor);
+    const key = actor.toString();
+    const balance = this.balances!.get(key);
     if (balance && balance < amount) {
       throw new Error('Amount exceeds account balance');
     }
-    this.balances!.set(actor, balance.sub(amount));
+    this.balances!.set(key, balance.sub(amount));
     this.totalSupply = this.totalSupply!.sub(amount);
 
     msg.reply(FTEvent.Transfer(new FTActionTransfer(actor, ZERO_ID, amount)).encode());
   }
 
   transfer(from: ActorId, to: ActorId, amount: U64): void {
+    const fromKey = from.toString();
+    const toKey = to.toString();
+
     if (from == ZERO_ID || to == ZERO_ID) {
       throw new Error('Zero addresses');
     }
 
-    if (!this.canTransfer(from, amount)) {
+    if (!this.canTransfer(fromKey, amount)) {
       throw new Error('Not allowed to transfer');
     }
-    const balance = this.balances!.get(from);
-    debug(`balance: ${balance}`);
-    this.balances!.set(from, balance.sub(amount));
+
+    const balance = this.balances!.get(fromKey);
     let toBalance: U64;
-    if (!this.balances!.has(to)) {
+
+    this.balances!.set(fromKey, balance.sub(amount));
+
+    if (!this.balances!.has(toKey)) {
       toBalance = U64.from(0);
     } else {
-      toBalance = this.balances!.get(to);
+      toBalance = this.balances!.get(toKey);
     }
-    this.balances!.set(to, toBalance.add(amount));
+    this.balances!.set(toKey, toBalance.add(amount));
     msg.reply(FTEvent.Transfer(new FTActionTransfer(from, to, amount)).encode());
   }
 
   approve(to: ActorId, amount: U64): void {
+    const toKey = to.toString();
+    const sourceKey = msg.source().toString();
     if (to == ZERO_ID) {
       throw new Error('Approve to zero address');
     }
-    if (this.allowances!.has(new ActorId(msg.source()))) {
-      this.allowances!.get(new ActorId(msg.source())).set(to, amount);
+    if (this.allowances!.has(sourceKey)) {
+      this.allowances!.get(sourceKey).set(toKey, amount);
     } else {
-      const allowance = new Map<ActorId, U64>();
-      allowance.set(to, amount);
-      this.allowances!.set(new ActorId(msg.source()), allowance);
+      const allowance = new Map<string, U64>();
+      allowance.set(toKey, amount);
+      this.allowances!.set(sourceKey, allowance);
       msg.reply(FTEvent.Approve(new FTActionTransfer(new ActorId(msg.source()), to, amount)).encode());
     }
   }
 
-  canTransfer(from: ActorId, amount: U64): boolean {
-    debug(`from: ${from.toString()}`);
-    debug(`msg.source(): ${msg.source().toString()}`);
-    this.balances!.keys().forEach((k) => {
-      debug(`${k.toString()}`);
-    });
-    debug(`size: ${this.balances!.size}`);
-    debug(`from == new ActorId(msg.source()): ${from == new ActorId(msg.source())}`);
-    debug(`this.balances!.has(from): ${this.balances!.has(from)}`);
-    debug(`this.balances!.get(from) > amount: ${this.balances!.get(from) > amount}`);
-    if (from == new ActorId(msg.source()) && this.balances!.has(from) && this.balances!.get(from) > amount) {
+  canTransfer(from: string, amount: U64): boolean {
+    const sourceKey = new ActorId(msg.source()).toString();
+
+    if (from == sourceKey && this.balances!.has(from) && this.balances!.get(from) > amount) {
       return true;
     }
-    if (this.allowances!.has(from) && this.allowances!.get(from).has(new ActorId(msg.source()))) {
-      let allowedAmount = this.allowances!.get(from).get(new ActorId(msg.source()));
+
+    if (this.allowances!.has(from) && this.allowances!.get(from).has(sourceKey)) {
+      let allowedAmount = this.allowances!.get(from).get(sourceKey);
       if (allowedAmount) {
-        this.allowances!.get(from).set(new ActorId(msg.source()), allowedAmount.sub(amount));
+        this.allowances!.get(from).set(sourceKey, allowedAmount.sub(amount));
         return true;
       }
     }
@@ -113,7 +118,8 @@ class FungibleToken extends CodecClass {
   }
 
   balanceOf(account: ActorId): void {
-    const balance = this.balances!.has(account) ? this.balances!.get(account) : U64.from(0);
+    const key = account.toString();
+    const balance = this.balances!.has(key) ? this.balances!.get(key) : U64.from(0);
     msg.reply(balance.encode());
   }
 }
@@ -131,7 +137,7 @@ export function handle(): void {
   const bytes = msg.read();
   const action = FTAction.decode(bytes);
   const ft = token.unwrap();
-  debug(action.variantIndex.toString());
+
   if (action.match(FTActionVariants.Mint)) {
     ft.mint(action.asMint());
   } else if (action.match(FTActionVariants.Approve)) {
