@@ -1,6 +1,6 @@
 import { CodecClass, Option, ScaleString, U64, U8 } from 'as-scale-codec/assembly';
-import { msg } from 'as-gear-core/assembly';
-import { ActorId } from 'as-gear-std/assembly';
+import { debug, msg } from 'as-gcore/assembly';
+import { ActorId } from 'as-gstd/assembly';
 
 import { FTAction, FTActionTransfer, FTActionVariants, FTEvent, InitConfig } from './io';
 
@@ -34,6 +34,8 @@ class FungibleToken extends CodecClass {
   mint(amount: U64): void {
     const actor = new ActorId(msg.source());
     const key = actor.toString();
+
+    debug(`map size: ${this.balances!.size}`);
 
     if (this.balances!.has(key)) {
       this.balances!.set(key, this.balances!.get(key).add(amount));

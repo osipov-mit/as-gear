@@ -5,20 +5,15 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "assemblyscript": "0.27.5"
+    "assemblyscript": "0.27.5",
+    "@as-pect/cli": "^8.1.0"
   },
   "scripts": {
-    "asbuild:debug": "asc assembly/index.ts --target debug",
-    "asbuild:release": "asc assembly/index.ts --target release",
-    "asbuild": "npm run asbuild:debug && npm run asbuild:release",
-    "start": "npx serve .",
-    "add-env": "node ./add-env.js",
     "clear": "rm -rf build",
     "test": "asp --verbose",
     "test:ci": "asp --summary"
   },
   "dependencies": {
-    "as-bignum": "^0.2.30",
-    "as-gear-core": "*"
+    "as-bignum": "^0.2.30"
   }
 }

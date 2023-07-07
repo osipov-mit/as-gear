@@ -14,6 +14,6 @@
   "devDependencies": {
     "assemblyscript": "0.27.5",
     "as-scale-codec": "*",
-    "as-gear-core": "*"
+    "as-gcore": "*"
   }
 }

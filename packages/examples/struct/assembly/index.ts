@@ -1,4 +1,4 @@
-import { msg } from 'as-gear-core/assembly';
+import { msg } from 'as-gcore/assembly';
 import { MyStruct } from './io';
 
 let STATE = new MyStruct();

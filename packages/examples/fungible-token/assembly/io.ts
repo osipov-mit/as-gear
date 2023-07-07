@@ -1,5 +1,5 @@
 import { CodecClass, ScaleString, U64, U8, Vec } from 'as-scale-codec/assembly';
-import { InOut, MetadataRepr, ActorId } from 'as-gear-std/assembly';
+import { InOut, MetadataRepr, ActorId } from 'as-gstd/assembly';
 
 // @ts-ignore: decorator
 @codec

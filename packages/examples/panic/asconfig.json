@@ -15,12 +15,12 @@
   "options": {
     "importMemory": true,
     "noExportMemory": true,
-    "runtime": "../../../node_modules/as-gear-core/assembly/runtime/gear",
+    "runtime": "../../../node_modules/as-gcore/assembly/runtime/gear",
     "exportStart": "nostart",
     "converge": false,
     "exportRuntime": true,
     "disable": ["bulk-memory"],
-    "use": ["abort=../../../node_modules/as-gear-core/assembly/runtime/gear/panicHandler"],
+    "use": ["abort=../../../node_modules/as-gcore/assembly/runtime/gear/panicHandler"],
     "noAssert": true
   }
 }

@@ -1,4 +1,4 @@
-import { debug, msg } from 'as-gear-core/assembly';
+import { debug, msg } from 'as-gcore/assembly';
 import { MyEnum, Variants } from './io';
 
 export function init(): void {

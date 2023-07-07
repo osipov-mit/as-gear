@@ -1,4 +1,4 @@
-import { msg, debug } from 'as-gear-core/assembly';
+import { msg, debug } from 'as-gcore/assembly';
 import { ScaleString } from 'as-scale-codec/assembly';
 
 export function handle(): void {

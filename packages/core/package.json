@@ -1,11 +1,9 @@
 {
-  "name": "as-gear-core",
+  "name": "as-gcore",
   "version": "0.0.1",
   "description": "",
   "main": "./assembly/index.ts",
-  "scripts": {
-    "test": "node tests"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",

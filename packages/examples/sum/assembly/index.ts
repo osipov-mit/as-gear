@@ -1,6 +1,7 @@
 import { u128 } from 'as-bignum/assembly';
-import { debug, msg } from 'as-gear-core/assembly';
-import { I32, Option, ScaleString, Vec, ActorId } from 'as-scale-codec/assembly';
+import { debug, msg } from 'as-gcore/assembly';
+import { ActorId } from 'as-gstd/assembly';
+import { I32, Option, ScaleString, Vec } from 'as-scale-codec/assembly';
 
 class State {
   private _sendTo: Option<ActorId>;
@@ -54,7 +55,7 @@ export function handle(): void {
 
   if (STATE.sendTo.isSome) {
     debug(`(handle) send msg`);
-    msg.send(STATE.sendTo.unwrap().value, sum.encode(), u128.Zero);
+    msg.send(STATE.sendTo.unwrap(), sum.encode(), u128.Zero);
     debug('(handle) msg sent');
   }
 
