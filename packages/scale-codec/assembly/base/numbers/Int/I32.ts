@@ -10,6 +10,7 @@ export class I32 extends BaseInt<i32> {
     result.decode(value);
     return result;
   }
+
   @inline
   @operator('==')
   eq(other: I32): bool {
@@ -32,6 +33,12 @@ export class I32 extends BaseInt<i32> {
   @operator('-')
   sub(other: I32): I32 {
     return new I32(super._value - other.value);
+  }
+
+  @inline
+  @operator('*')
+  mul(other: I32): I32 {
+    return new I32(super._value * other.value);
   }
 
   @inline

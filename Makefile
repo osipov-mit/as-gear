@@ -35,6 +35,14 @@ build_sum:
 	@rm -f build/sum*.meta.wasm
 	@ls -l build/sum*.wasm
 
+mult:
+	@npx lerna run --scope multiplier asbuild:debug
+	@./wasm-proc --assembly-script build/multiplier.debug.wasm
+	@rm -f build/multiplier*.meta.wasm
+	@ls -l build/multiplier*.wasm
+
+build_mult: build_transformer mult
+
 panic:
 	@npx lerna run --scope panic asbuild:debug
 	@./wasm-proc --assembly-script build/panic.debug.wasm

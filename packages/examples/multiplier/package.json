@@ -1,0 +1,24 @@
+{
+  "name": "multiplier",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./build/release.js",
+      "types": "./build/release.d.ts"
+    }
+  },
+  "scripts": {
+    "asbuild:debug": "asc assembly/index.ts --target debug --transform ../../../node_modules/as-gear-transformer/dist/transformer.js",
+    "asbuild:release": "asc assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:debug && npm run asbuild:release",
+    "test": "node tests"
+  },
+  "devDependencies": {
+    "assemblyscript": "0.27.5",
+    "as-bignum": "^0.2.30",
+    "as-scale-codec": "*",
+    "as-gcore": "*",
+    "as-gstd": "*",
+    "transformer": "*"
+  }
+}

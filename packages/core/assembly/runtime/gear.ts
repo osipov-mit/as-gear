@@ -1,9 +1,6 @@
+import { panic } from "../core/utils";
 import { AL_MASK, OBJECT, OBJECT_OVERHEAD, BLOCK_MAXSIZE, BLOCK_OVERHEAD, BLOCK, OBJECT_MAXSIZE } from "./common";
-import { panic } from '../core/utils'
-
-// @ts-ignore: decorator
-@lazy
-export const E_ALLOCATION_TOO_LARGE: string = "Allocation too large";
+import { E_ALLOCATION_TOO_LARGE } from "./util/errors";
 
 
 //@ts-ignore: decorator

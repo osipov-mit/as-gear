@@ -1,13 +1,13 @@
 {
   "targets": {
     "debug": {
-      "outFile": "../../../build/ft.debug.wasm",
-      "textFile": "../../../build/ft.debug.wat",
+      "outFile": "../../../build/multiplier.debug.wasm",
+      "textFile": "../../../build/multiplier.debug.wat",
       "debug": true
     },
     "release": {
-      "outFile": "../../../build/ft.wasm",
-      "textFile": "../../../build/ft.wat",
+      "outFile": "../../../build/multiplier.wasm",
+      "textFile": "../../../build/multiplier.wat",
       "optimizeLevel": 3,
       "shrinkLevel": 0
     }
@@ -15,12 +15,12 @@
   "options": {
     "importMemory": true,
     "noExportMemory": true,
-    "runtime": "../../../node_modules/as-gcore/assembly/runtime/rt-minimal",
+    "runtime": "../../core/assembly/runtime/minimal",
     "exportStart": "_start",
     "converge": false,
     "exportRuntime": true,
     "disable": ["bulk-memory"],
-    "use": ["abort=../../../node_modules/as-gcore/assembly/runtime/rt-minimal/panicHandler"],
+    "use": ["abort="],
     "stackSize": 1048576,
     "noAssert": true,
     "memoryBase": 8
